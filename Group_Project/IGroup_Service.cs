@@ -44,8 +44,24 @@ namespace Group_Project
         [OperationContract]
         Mask_Type getMask(int id);
 
+        //change password
+        [OperationContract]
+        string Changepassword(string email, int id, string password);
+
         //hash password
         //active 
+        //delete user
+        [OperationContract]
+        string deleteUser(int id);
+
+
+        [OperationContract]
+        string AddGuest(int id, string names, string address, int orderid);
+
+
+
+
+
 
 
 
@@ -60,7 +76,26 @@ namespace Group_Project
         Order_Item getItem(int id);
 
         //get all items
+        [OperationContract]
+        List<Order_Item> getallitems();
+
         //get all invoices
+        [OperationContract]
+        List<Order_Table> getallInvoices();
+
+
+        //get invoices by client id
+        [OperationContract]
+        List<Order_Table> getInvoicebyclient(int clientid);
+
+        //get invoices by date
+        [OperationContract]
+        List<Order_Table> getInvoicebbydate(DateTime d);
+
+
+
+
+
 
 
 
@@ -90,30 +125,50 @@ namespace Group_Project
         string updatepsize(int sizeid, int psize, int id);
 
         [OperationContract]
-        string addcustom(int pid, string filter, int size);
+        string addcustom(int pid, int filter, string size);
 
         [OperationContract]
-        string editcustom(int pid, string filter, int size, int id);
+        string editcustom(int pid, int filter, string size, int id);
 
         [OperationContract]
         List<Product> getallproducts();
 
         [OperationContract]
-        Product getprod(int maskid);
+        List<Mask_Type> getallMasktypes();
 
         [OperationContract]
         Product getProduct(int id);
 
+        //get custom
+        [OperationContract]
+        Custom_Product getcustom(int id);
+
+        //get size
+        [OperationContract]
+        Size_Table getsize(int id);
+
+        //get prod size from product table
+        [OperationContract]
+        Product_Size getproductsize(int pid, int sid);
+
+        //delete size, product size, product and customproduct, mask type
+        [OperationContract]
+        string deletesize(int id);
 
         [OperationContract]
-        Product filterprod(Double min, Double max);
-        //get custom
-        //get size
-        //get prod size from product table
+        string deletePsize(int pid,int sid);
 
-        //list all custom
-        //list all size
-        //list all prod size from product table
+        [OperationContract]
+        string deleteMaskt(int id);
+
+        [OperationContract]
+        string deletecustom(int id);
+
+        [OperationContract]
+        List<Product> getProductsbycategory(int maskid); 
+
+
+
 
         //Report
 

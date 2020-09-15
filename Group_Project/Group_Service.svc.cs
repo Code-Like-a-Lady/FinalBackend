@@ -33,7 +33,7 @@ namespace Group_Project
             }
         }
 
-        
+
         //getting mask
         public Mask_Type getMask(int id)
         {
@@ -72,64 +72,65 @@ namespace Group_Project
         // function to get email from the tabe
         public User_Table getEmail(string email, int id)
         {
-            
-                var us = (from e in db.User_Tables
-                            where e.Email.Equals(email) && e.User_Id != id
-                            select e).FirstOrDefault();
 
-                if (us == null)
+            var us = (from e in db.User_Tables
+                      where e.Email.Equals(email) && e.User_Id != id
+                      select e).FirstOrDefault();
+
+            if (us == null)
+            {
+                return null;
+            }
+            else
+            {
+                return us;
+            }
+
+        }
+
+        public string Changepassword(string email, int id, string password)
+        {
+            var eemail = getEmail(email, id);
+
+            if (eemail == null)
+            {
+                var user = getUser(id);
+
+                if (user != null)
                 {
-                    return null;
+                    user.Password = password;
+                   
+                    try
+                    {
+                        //update
+                        db.SubmitChanges();
+                        return " updated";
+                    }
+                    catch (IndexOutOfRangeException ex)
+                    {
+                        ex.GetBaseException();
+                        return "unsuccessful update";
+                    }
                 }
                 else
                 {
-                    return us;
+                    // needs to register user
+                    return "unregistred";
                 }
-
-        }
-
-        //getting invoice
-        public Order_Table getInvoice(int id)
-        {
-            var order = (from o in db.Order_Tables
-                      where o.Order_Id.Equals(id)
-                      select o).FirstOrDefault();
-
-            if (order == null)
-            {
-                return null;
             }
             else
             {
-                return order;
+                return "unsuccessful update";
             }
         }
-
-        //getting item
-        public Order_Item getItem(int id)
-        {
-            var item = (from i in db.Order_Items
-                         where i.Order_Id.Equals(id)
-                         select i).FirstOrDefault();
-
-            if (item == null)
-            {
-                return null;
-            }
-            else
-            {
-                return item;
-            }
-        }
-
 
         //getiing user
         public User_Table getUser(int id)
         {
 
             var us = (from u in db.User_Tables
-                        where u.User_Id.Equals(id)
-                        select u).FirstOrDefault();
+                      where u.User_Id.Equals(id)
+                      select u).FirstOrDefault();
 
             if (us == null)
             {
@@ -147,8 +148,8 @@ namespace Group_Project
         {
             //check if the user's information is in the database
             var us = (from u in db.User_Tables
-                        where u.Email.Equals(email) && u.Password.Equals(password)
-                        select u).FirstOrDefault();
+                      where u.Email.Equals(email) && u.Password.Equals(password)
+                      select u).FirstOrDefault();
 
             if (us != null)
             {
@@ -166,12 +167,12 @@ namespace Group_Project
         public string Register(string username, string password, string name, string email, string contactno, int active, string address, string surname = null, string businesstype = null, string usertype = "client")
         {
             var user = (from u in db.User_Tables
-                             where u.Email.Equals(email)
-                             select u).FirstOrDefault();
+                        where u.Email.Equals(email)
+                        select u).FirstOrDefault();
 
             if (user == null)
             {
-               var newUser = new User_Table
+                var newUser = new User_Table
                 {
                     Username = username,
                     //Surname = surname,
@@ -183,7 +184,8 @@ namespace Group_Project
                     Active = active,
                     Address = address,
                     Usertype = usertype
-                    
+
+
                 };
 
                 if (usertype == "admin")
@@ -241,13 +243,14 @@ namespace Group_Project
                     user.Contact_Number = contactno;
                     user.Address = address;
 
-                    if(user.Usertype == "admin")
+                    if (user.Usertype == "admin")
                     {
                         //getting admin and changing the surname
                         var a = getAdmin(id);
                         a.Surname = surname;
 
-                    }else if( user.Usertype == "client")
+                    }
+                    else if (user.Usertype == "client")
                     {
                         //if client change the business type if they wish to change it
                         var c = getClient(id);
@@ -272,11 +275,211 @@ namespace Group_Project
                 }
             }
             else
-            { 
+            {
                 return "unsuccessful update";
             }
         }
-        
+
+        //
+        public string AddGuest(int id, string names, string address, int orderid)
+        {
+            var guest = (from g in db.Guests
+                         where g.Guest_Id.Equals(id)
+                         select g).FirstOrDefault();
+
+            if (guest == null)
+            {
+                var newguest = new Guest
+                {
+                    Guest_FullName = names,
+                    Guest_Address = address,
+                    Order_Id = orderid
+
+                };
+
+                db.Guests.InsertOnSubmit(newguest);
+
+                try
+                {
+                    db.SubmitChanges();
+                    return "guest added";
+                }
+                catch (Exception ex)
+                {
+                    ex.GetBaseException();
+                    return "unsuccessful";
+                }
+            }
+            else
+            {
+                return "unsuccessful";
+            }
+        }
+
+        public string deleteUser(int id)
+        {
+            var user = getUser(id);
+
+            var del =       from u in db.User_Tables
+                            where u.User_Id.Equals(id)
+                            select u;
+
+            foreach (var us in del)
+            {
+                db.User_Tables.DeleteOnSubmit(us);
+            }
+
+            try
+            {
+                db.SubmitChanges();
+                return " Deleted";
+            }
+            catch (Exception e)
+            {
+                return "User doesn't exist";
+            }
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //getting invoice
+        public Order_Table getInvoice(int id)
+        {
+            var order = (from o in db.Order_Tables
+                         where o.Order_Id.Equals(id)
+                         select o).FirstOrDefault();
+
+            if (order == null)
+            {
+                return null;
+            }
+            else
+            {
+                return order;
+            }
+        }
+
+        //getting item
+        public Order_Item getItem(int id)
+        {
+            var item = (from i in db.Order_Items
+                        where i.Order_Id.Equals(id)
+                        select i).FirstOrDefault();
+
+            if (item == null)
+            {
+                return null;
+            }
+            else
+            {
+                return item;
+            }
+        }
+
+
+
+        public List<Product> getProductsbycategory(int maskid)
+        {
+            var p = new List<Product>();
+
+            dynamic prod = (from t in db.Products
+                            where t.Mask_Id.Equals(maskid)
+                            select t);
+
+            foreach (Product pro in prod)
+            {
+                var ps = getProduct(pro.Product_Id);
+                p.Add(ps);
+            }
+
+            return p;
+        }
+
+        public List<Order_Item> getallitems()
+        {
+            var o = new List<Order_Item>();
+
+            dynamic prod = (from t in db.Order_Items
+                            select t);
+
+            foreach (Order_Table or in prod)
+            {
+                var ord = getItem(or.Order_Id);
+                o.Add(ord);
+            }
+
+            return o;
+        }
+
+        public List<Order_Table> getallInvoices()
+        {
+            var o = new List<Order_Table>();
+
+            dynamic prod = (from t in db.Order_Tables
+                            select t);
+
+            foreach (Order_Table or in prod)
+            {
+                var ord = getInvoice(or.Order_Id);
+                o.Add(ord);
+            }
+
+            return o;
+        }
+
+        public List<Order_Table> getInvoicebyclient(int clientid)
+        {
+            var o = new List<Order_Table>();
+
+            dynamic prod = (from t in db.Order_Tables
+                            where t.Client.User_Id.Equals(clientid)
+                            select t);
+
+            foreach (Order_Table or in prod)
+            {
+                var ord = getInvoice(or.Order_Id);
+                o.Add(ord);
+            }
+
+            return o;
+        }
+
+        public List<Order_Table> getInvoicebbydate(DateTime d)
+        {
+            var o = new List<Order_Table>();
+
+            dynamic prod = (from t in db.Order_Tables
+                            where t.Order_date.Equals(d)
+                            select t);
+
+            foreach (Order_Table or in prod)
+            {
+                var ord = getInvoice(or.Order_Id);
+                o.Add(ord);
+            }
+
+            return o;
+        }
+
+       
+
+
+
+
+
+
 
         //add products
         public string addproducts(string name, string description, Decimal price, int active, int maskid, int admin, int quantity)
@@ -299,8 +502,8 @@ namespace Group_Project
                     Description = description,
                     Unit_Price = price,
                     Active = active,
-                    Date_Created = DateTime.Today//,
-                    //Quantity = quantity
+                    Date_Created = DateTime.Today,
+                    Product_Quantity = quantity
                 };
                 db.Products.InsertOnSubmit(newprod);
 
@@ -320,7 +523,7 @@ namespace Group_Project
                 return "error";
             }
 
-        
+
         }
 
         public string editproduct(string name, string description, Decimal price, int id, int active, int maskid, int admin, int quantity)
@@ -332,6 +535,7 @@ namespace Group_Project
                 prod.Name = name;
                 prod.Description = description;
                 prod.Unit_Price = price;
+                prod.Product_Quantity = quantity;
                 var a = getAdmin(admin);
                 a.User_Id = admin;
 
@@ -359,8 +563,8 @@ namespace Group_Project
         public string addtype(string name, string description, int admin)
         {
             var ty = (from p in db.Mask_Types
-                        where p.Name.Equals(name)
-                        select p).FirstOrDefault();
+                      where p.Name.Equals(name)
+                      select p).FirstOrDefault();
 
             var a = getAdmin(admin);
             a.User_Id = admin;
@@ -416,54 +620,197 @@ namespace Group_Project
             }
             else
             {
-                
+
                 return "type does not exist";
             }
         }
 
         public string addsize(string name, string dimensions)
         {
-            throw new NotImplementedException();
-        }
+            var ty = (from p in db.Mask_Types
+                      where p.Name.Equals(name)
+                      select p).FirstOrDefault();
 
-        public string editsize(string name, string dimen)
-        {
-            throw new NotImplementedException();
+
+            if (ty == null)
+            {
+                var newtype = new Size_Table
+                {
+                    Name = name,
+                    Dimensions = dimensions,
+
+                };
+                db.Size_Tables.InsertOnSubmit(newtype);
+
+                try
+                {
+                    db.SubmitChanges();
+                    return "added";
+                }
+                catch (Exception ex)
+                {
+                    ex.GetBaseException();
+                    return "not added";
+                }
+            }
+            else
+            {
+                return "error";
+            }
         }
 
         public string addpsize(int sizeid, int psize)
         {
-            throw new NotImplementedException();
+            var ty = (from p in db.Product_Sizes
+                      where p.Size_Id.Equals(sizeid) && p.Product_Id.Equals(psize)
+                      select p).FirstOrDefault();
+
+            if (ty == null)
+            {
+                var newtype = new Product_Size
+                {
+                    Size_Id = sizeid,
+                    Product_Id = psize
+
+                };
+                db.Product_Sizes.InsertOnSubmit(newtype);
+
+                try
+                {
+                    db.SubmitChanges();
+                    return "added";
+                }
+                catch (Exception ex)
+                {
+                    ex.GetBaseException();
+                    return "not added";
+                }
+            }
+            else
+            {
+                return "error";
+            }
         }
 
-        public string updatepsize(int sizeid, int psize)
+        public string addcustom(int pid, int filter, string size)
         {
-            throw new NotImplementedException();
+            var ty = (from p in db.Custom_Products
+                      where p.Filter.Equals(filter)
+                      select p).FirstOrDefault();
+
+
+            if (ty == null)
+            {
+                var newtype = new Custom_Product
+                {
+                    Filter = filter,
+                    Custom_Size = size
+
+                };
+                db.Custom_Products.InsertOnSubmit(newtype);
+
+                try
+                {
+                    db.SubmitChanges();
+                    return "added";
+                }
+                catch (Exception ex)
+                {
+                    ex.GetBaseException();
+                    return "not added";
+                }
+            }
+            else
+            {
+                return "error";
+            }
+
         }
 
-        public string addcustom(int pid, string filter, int size)
+        public string editsize(string name, string dimen, int id)
         {
-            throw new NotImplementedException();
+            var ty = getsize(id);
+
+            if (ty != null)
+            {
+                ty.Name = name;
+                ty.Dimensions = dimen;
+            
+                try
+                {
+                    //update
+                    db.SubmitChanges();
+                    return " updated";
+                }
+                catch (IndexOutOfRangeException ex)
+                {
+                    ex.GetBaseException();
+                    return "unsuccessful update";
+                }
+            }
+            else
+            {
+
+                return "size does not exist";
+            }
         }
 
-        public string editcustom(int pid, string filter, int size)
+        public string updatepsize(int sizeid, int psize, int id)
         {
-            throw new NotImplementedException();
+            var ty = getproductsize(psize,sizeid);
+
+            if (ty != null)
+            {
+                ty.Size_Id = sizeid;
+                ty.Product_Id = psize;
+                try
+                {
+                    //update
+                    db.SubmitChanges();
+                    return " updated";
+                }
+                catch (IndexOutOfRangeException ex)
+                {
+                    ex.GetBaseException();
+                    return "unsuccessful update";
+                }
+            }
+            else
+            {
+
+                return "product size does not exist";
+            }
         }
 
-        public Product getprod(int maskid)
+        public string editcustom(int pid, int filter, string size, int id)
         {
-            throw new NotImplementedException();
-        }
+            var ty = getcustom(id);
 
-        public Product filterprod(double min, double max)
-        {
-            throw new NotImplementedException();
+            if (ty != null)
+            {
+                ty.Filter = filter;
+                ty.Custom_Size = size;
+                try
+                {
+                    //update
+                    db.SubmitChanges();
+                    return " updated";
+                }
+                catch (IndexOutOfRangeException ex)
+                {
+                    ex.GetBaseException();
+                    return "unsuccessful update";
+                }
+            }
+            else
+            {
+
+                return "custom product does not exist";
+            }
         }
 
         public List<Product> getallproducts()
         {
-            
             var prods = new List<Product>();
 
             dynamic prod = (from t in db.Products
@@ -474,10 +821,25 @@ namespace Group_Project
                 var ps = getProduct(p.Product_Id);
                 prods.Add(ps);
             }
-               
+
             return prods;
+        }
+
+        public List<Mask_Type> getallMasktypes()
+        {
+            var type = new List<Mask_Type>();
+
+            dynamic prod = (from t in db.Mask_Types
+                            select t);
+
+            foreach (Product p in prod)
+            {
+                var ps = getMask(p.Mask_Id);
+                type.Add(ps);
             }
 
+            return type;
+        }
 
         public Product getProduct(int id)
         {
@@ -494,5 +856,156 @@ namespace Group_Project
                 return us;
             }
         }
+
+        public Custom_Product getcustom(int id)
+        {
+
+            var us = (from p in db.Custom_Products
+                      where p.Product_Id.Equals(id)
+                      select p).FirstOrDefault();
+
+            if (us == null)
+            {
+                return null;
+            }
+            else
+            {
+                return us;
+            }
+        }
+
+        public Size_Table getsize(int id)
+        {
+
+            var us = (from p in db.Size_Tables
+                      where p.Size_Id.Equals(id)
+                      select p).FirstOrDefault();
+
+            if (us == null)
+            {
+                return null;
+            }
+            else
+            {
+                return us;
+            }
+        }
+
+        
+
+
+        public Product_Size getproductsize(int pid, int sid)
+        {
+
+            var us = (from p in db.Product_Sizes
+                      where p.Product_Id.Equals(pid) && p.Size_Id.Equals(sid)
+                      select p).FirstOrDefault();
+
+            if (us == null)
+            {
+                return null;
+            }
+            else
+            {
+                return us;
+            }
+        }
+
+        public string deletesize(int id)
+        {
+
+            var del = from s in db.Size_Tables
+                      where s.Size_Id.Equals(id)
+                      select s;
+
+            foreach (var siz in del)
+            {
+                db.Size_Tables.DeleteOnSubmit(siz);
+            }
+
+            try
+            {
+                db.SubmitChanges();
+                return " Deleted";
+            }
+            catch (Exception e)
+            {
+                return "User doesn't exist";
+            }
+
+        }
+
+        public string deletePsize(int pid, int sid)
+        {
+
+            var del = from p in db.Product_Sizes
+                      where p.Size_Id.Equals(pid) && p.Size_Id.Equals(sid)
+                      select p;
+
+            foreach (var us in del)
+            {
+                db.Product_Sizes.DeleteOnSubmit(us);
+            }
+
+            try
+            {
+                db.SubmitChanges();
+                return " Deleted";
+            }
+            catch (Exception e)
+            {
+                return "User doesn't exist";
+            }
+
+        }
+
+        public string deleteMaskt(int id)
+        {
+
+            var del = from m in db.Mask_Types
+                      where m.Mask_Id.Equals(id)
+                      select m;
+
+            foreach (var us in del)
+            {
+                db.Mask_Types.DeleteOnSubmit(us);
+            }
+
+            try
+            {
+                db.SubmitChanges();
+                return " Deleted";
+            }
+            catch (Exception e)
+            {
+                return "User doesn't exist";
+            }
+
+        }
+
+        public string deletecustom(int id)
+        {
+
+            var del = from p in db.Custom_Products
+                      where p.Product_Id.Equals(id)
+                      select p;
+
+            foreach (var us in del)
+            {
+                db.Custom_Products.DeleteOnSubmit(us);
+            }
+
+            try
+            {
+                db.SubmitChanges();
+                return " Deleted";
+            }
+            catch (Exception e)
+            {
+                return "User doesn't exist";
+            }
+
+        }
     }
 }
+

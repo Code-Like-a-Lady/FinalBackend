@@ -13,8 +13,8 @@
       <Column Name="User_Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="Business_Type" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
       <Association Name="Client_Feedback" Member="Feedbacks" ThisKey="User_Id" OtherKey="Client_User_Id" Type="Feedback" />
+      <Association Name="Client_PayClient" Member="PayClients" ThisKey="User_Id" OtherKey="User_Id" Type="PayClient" />
       <Association Name="Client_Order_Table" Member="Order_Tables" ThisKey="User_Id" OtherKey="Client_User_Id" Type="Order_Table" />
-      <Association Name="Client_Pay_Client" Member="Pay_Clients" ThisKey="User_Id" OtherKey="User_Id" Type="Pay_Client" />
     </Type>
   </Table>
   <Table Name="dbo.Product_Size" Member="Product_Sizes">
@@ -56,8 +56,8 @@
       <Column Name="Quantity" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Order_Id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Product_Id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Association Name="Order_Table_Order_Item" Member="Order_Table" ThisKey="Order_Id" OtherKey="Order_Id" Type="Order_Table" IsForeignKey="true" />
       <Association Name="Product_Order_Item" Member="Product" ThisKey="Product_Id" OtherKey="Product_Id" Type="Product" IsForeignKey="true" />
+      <Association Name="Order_Table_Order_Item" Member="Order_Table" ThisKey="Order_Id" OtherKey="Order_Id" Type="Order_Table" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.Feedback" Member="Feedbacks">
@@ -88,30 +88,10 @@
       <Association Name="Delivery_Order_Table" Member="Order_Tables" ThisKey="Delivery_Id" OtherKey="Delivery_Id" Type="Order_Table" />
     </Type>
   </Table>
-  <Table Name="dbo.Order_Table" Member="Order_Tables">
-    <Type Name="Order_Table">
-      <Column Name="Order_Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="Order_date" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="Order_Total" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="Order_Session" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Column Name="Order_Status" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="Order_Tax" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="Order_Discount" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="Order_Shipping" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
-      <Column Name="[Client.User_Id]" Member="Client_User_Id" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="Delivery_Id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Payment_Id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Association Name="Order_Table_Order_Item" Member="Order_Items" ThisKey="Order_Id" OtherKey="Order_Id" Type="Order_Item" />
-      <Association Name="Order_Table_Guest" Member="Guests" ThisKey="Order_Id" OtherKey="Order_Id" Type="Guest" />
-      <Association Name="Client_Order_Table" Member="Client" ThisKey="Client_User_Id" OtherKey="User_Id" Type="Client" IsForeignKey="true" />
-      <Association Name="Delivery_Order_Table" Member="Delivery" ThisKey="Delivery_Id" OtherKey="Delivery_Id" Type="Delivery" IsForeignKey="true" />
-      <Association Name="Payment_Order_Table" Member="Payment" ThisKey="Payment_Id" OtherKey="Payment_Id" Type="Payment" IsForeignKey="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.Guest" Member="Guests">
     <Type Name="Guest">
       <Column Name="Guest_Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="Guest_Name" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Guest_FullName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
       <Column Name="Guest_Address" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
       <Column Name="Order_Id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Association Name="Order_Table_Guest" Member="Order_Table" ThisKey="Order_Id" OtherKey="Order_Id" Type="Order_Table" IsForeignKey="true" />
@@ -120,30 +100,45 @@
   <Table Name="dbo.Payment" Member="Payments">
     <Type Name="Payment">
       <Column Name="Payment_Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="Card_Num" Type="System.Data.Linq.Binary" DbType="Binary(50) NOT NULL" CanBeNull="false" UpdateCheck="Never" />
-      <Column Name="CVV" Type="System.Data.Linq.Binary" DbType="Binary(50) NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="Card_num" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CVV" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Expiry_Date" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
       <Column Name="Cardholder_Name" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
       <Column Name="PaymentType_Id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Payment_PayClient" Member="PayClients" ThisKey="Payment_Id" OtherKey="Payment_Id" Type="PayClient" />
       <Association Name="Payment_Order_Table" Member="Order_Tables" ThisKey="Payment_Id" OtherKey="Payment_Id" Type="Order_Table" />
-      <Association Name="Payment_Pay_Client" Member="Pay_Clients" ThisKey="Payment_Id" OtherKey="Payment_Id" Type="Pay_Client" />
-      <Association Name="Payment_Type_Payment" Member="Payment_Type" ThisKey="PaymentType_Id" OtherKey="PaymentType_Id" Type="Payment_Type" IsForeignKey="true" />
+      <Association Name="PaymentType_Payment" Member="PaymentType" ThisKey="PaymentType_Id" OtherKey="PaymentType_Id" Type="PaymentType" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.Payment_Type" Member="Payment_Types">
-    <Type Name="Payment_Type">
+  <Table Name="dbo.PaymentType" Member="PaymentTypes">
+    <Type Name="PaymentType">
       <Column Name="PaymentType_Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="Name" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Association Name="Payment_Type_Payment" Member="Payments" ThisKey="PaymentType_Id" OtherKey="PaymentType_Id" Type="Payment" />
+      <Association Name="PaymentType_Payment" Member="Payments" ThisKey="PaymentType_Id" OtherKey="PaymentType_Id" Type="Payment" />
     </Type>
   </Table>
-  <Table Name="dbo.Pay_Client" Member="Pay_Clients">
-    <Type Name="Pay_Client">
-      <Column Name="Payment_Id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="User_Id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+  <Table Name="dbo.PayClient" Member="PayClients">
+    <Type Name="PayClient">
       <Column Name="PayClient_Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Association Name="Payment_Pay_Client" Member="Payment" ThisKey="Payment_Id" OtherKey="Payment_Id" Type="Payment" IsForeignKey="true" />
-      <Association Name="Client_Pay_Client" Member="Client" ThisKey="User_Id" OtherKey="User_Id" Type="Client" IsForeignKey="true" />
+      <Column Name="User_Id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Payment_Id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Payment_PayClient" Member="Payment" ThisKey="Payment_Id" OtherKey="Payment_Id" Type="Payment" IsForeignKey="true" />
+      <Association Name="Client_PayClient" Member="Client" ThisKey="User_Id" OtherKey="User_Id" Type="Client" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.User_Table" Member="User_Tables">
+    <Type Name="User_Table">
+      <Column Name="User_Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Username" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Password" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Usertype" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Email" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Contact_Number" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Date_Created" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Address" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Images" Type="System.Data.Linq.Binary" DbType="Image" CanBeNull="true" UpdateCheck="Never" />
     </Type>
   </Table>
   <Table Name="dbo.Product" Member="Products">
@@ -156,6 +151,7 @@
       <Column Name="Date_Created" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="Mask_Id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="[Admin.User_Id]" Member="Admin_User_Id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Product_Quantity" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="Product_Product_Size" Member="Product_Sizes" ThisKey="Product_Id" OtherKey="Product_Id" Type="Product_Size" />
       <Association Name="Product_Custom_Product" Member="Custom_Product" ThisKey="Product_Id" OtherKey="Product_Id" Type="Custom_Product" Cardinality="One" />
       <Association Name="Product_Donation" Member="Donations" ThisKey="Product_Id" OtherKey="Product_Id" Type="Donation" />
@@ -164,18 +160,26 @@
       <Association Name="Mask_Type_Product" Member="Mask_Type" ThisKey="Mask_Id" OtherKey="Mask_Id" Type="Mask_Type" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.User_Table" Member="User_Tables">
-    <Type Name="User_Table">
-      <Column Name="User_Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="Username" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Column Name="Password" Type="System.Data.Linq.Binary" DbType="Binary(50) NOT NULL" CanBeNull="false" UpdateCheck="Never" />
-      <Column Name="Usertype" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="Name" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Column Name="Email" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Column Name="Contact_Number" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
-      <Column Name="Date_Created" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="Active" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Address" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+  <Table Name="dbo.Order_Table" Member="Order_Tables">
+    <Type Name="Order_Table">
+      <Column Name="Order_Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Payment_Types" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Order_date" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Order_Total" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="Order_Session" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Order_Status" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Order_Tax" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="Order_Discount" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="Order_Shipping" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="[Client.User_Id]" Member="Client_User_Id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Delivery_Id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Payment_Id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Order_Quantity" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Order_Table_Order_Item" Member="Order_Items" ThisKey="Order_Id" OtherKey="Order_Id" Type="Order_Item" />
+      <Association Name="Order_Table_Guest" Member="Guests" ThisKey="Order_Id" OtherKey="Order_Id" Type="Guest" />
+      <Association Name="Client_Order_Table" Member="Client" ThisKey="Client_User_Id" OtherKey="User_Id" Type="Client" IsForeignKey="true" />
+      <Association Name="Delivery_Order_Table" Member="Delivery" ThisKey="Delivery_Id" OtherKey="Delivery_Id" Type="Delivery" IsForeignKey="true" />
+      <Association Name="Payment_Order_Table" Member="Payment" ThisKey="Payment_Id" OtherKey="Payment_Id" Type="Payment" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>
