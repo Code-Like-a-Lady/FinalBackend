@@ -1006,6 +1006,58 @@ namespace Group_Project
             }
 
         }
+
+        public string deleteProduct(int P_Id)
+        {
+            //Get product based off ID
+            var delete = (from p in db.Products
+                          where p.Product_Id.Equals(P_Id)
+                          select p).FirstOrDefault();
+            if (delete != null)
+            {
+                //Set the active attribute to 0
+                delete.Active = 0;
+
+                try
+                {
+                    //Submit changes 
+                    db.SubmitChanges();
+                    return "Deleted";
+                }
+                catch (Exception e)
+                {
+                    return "Product not deleted";
+                }
+            }
+            else
+            {
+                return "Product doesn't exist";
+            }
+        }
+
+
+    
+    /*   public List<Delivery> GetAllDeliveries()
+        {
+
+        }
+
+         public List<Delivery> GetDeliveriesForClient()
+        {
+
+        }
+
+       public List<Delivery> GetDeliveriesByCompany()
+        {
+
+        }
+        //<-----Adding To Order----->
+  
+        public int AddOrderItem()
+        {
+
+        }
+    */
     }
 }
 

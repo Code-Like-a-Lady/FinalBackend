@@ -165,12 +165,26 @@ namespace Group_Project
         string deletecustom(int id);
 
         [OperationContract]
-        List<Product> getProductsbycategory(int maskid); 
-
-
+        List<Product> getProductsbycategory(int maskid);
+        [OperationContract]
+        string deleteProduct(int P_Id);
 
 
         //Report
+
+
+        //<---------------------------------------------Shopping Cart------------------------------------------------->
+        //<-----Deliveries----->
+        /*[OperationContract]
+        List<Delivery> GetAllDeliveries();
+        [OperationContract]
+        List<Delivery> GetDeliveriesForClient();
+        [OperationContract]
+        List<Delivery> GetDeliveriesByCompany();
+        //<-----Adding To Order----->
+        [OperationContract]
+        int AddOrderItem();
+        */
 
     }
 
