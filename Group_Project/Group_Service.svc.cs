@@ -414,7 +414,7 @@ namespace Group_Project
             dynamic prod = (from t in db.Order_Items
                             select t);
 
-            foreach (Order_Table or in prod)
+            foreach (Order_Item or in prod)
             {
                 var ord = getItem(or.Order_Id);
                 o.Add(ord);
@@ -443,15 +443,15 @@ namespace Group_Project
         {
             var o = new List<Order_Table>();
 
-            dynamic prod = (from t in db.Order_Tables
-                            where t.Client.User_Id.Equals(clientid)
+            dynamic prod = (from t in db.PayClients
+                            where t.User_Id.Equals(clientid)
                             select t);
-
-            foreach (Order_Table or in prod)
+            foreach (PayClient or in prod)
             {
                 var ord = getInvoice(or.Order_Id);
                 o.Add(ord);
             }
+
 
             return o;
         }
@@ -861,7 +861,7 @@ namespace Group_Project
         {
 
             var us = (from p in db.Custom_Products
-                      where p.Product_Id.Equals(id)
+                      where p.CustomProduct_Id.Equals(id)
                       select p).FirstOrDefault();
 
             if (us == null)
@@ -987,7 +987,7 @@ namespace Group_Project
         {
 
             var del = from p in db.Custom_Products
-                      where p.Product_Id.Equals(id)
+                      where p.CustomProduct_Id.Equals(id)
                       select p;
 
             foreach (var us in del)
@@ -1036,28 +1036,39 @@ namespace Group_Project
         }
 
 
-    
-    /*   public List<Delivery> GetAllDeliveries()
+
+        public List<Delivery> GetAllDeliveries()
         {
+            List<Delivery> delivery = new List<Delivery>();
+            dynamic deliveries = (from d in db.Deliveries
+                                  select d).ToList();
+            foreach (Delivery d in deliveries)
+            {
+                delivery.Add(d);
+            }
+
+            return delivery;
+        }
+
+        public List<Delivery> GetDeliveriesForClient(int ClientID)
+        {
+            List<Delivery> delivery = new List<Delivery>();
+            return delivery;
 
         }
 
-         public List<Delivery> GetDeliveriesForClient()
+        public List<Delivery> GetDeliveriesByCompany(int DeliveryID)
         {
-
+            List<Delivery> delivery = new List<Delivery>();
+            return delivery;
         }
 
-       public List<Delivery> GetDeliveriesByCompany()
-        {
-
-        }
         //<-----Adding To Order----->
-  
-        public int AddOrderItem()
-        {
 
-        }
-    */
+        //public int AddOrderItem()
+        //{
+
+        // }
     }
 }
 

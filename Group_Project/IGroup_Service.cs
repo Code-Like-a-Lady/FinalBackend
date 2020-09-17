@@ -175,16 +175,16 @@ namespace Group_Project
 
         //<---------------------------------------------Shopping Cart------------------------------------------------->
         //<-----Deliveries----->
-        /*[OperationContract]
+        [OperationContract]
         List<Delivery> GetAllDeliveries();
         [OperationContract]
-        List<Delivery> GetDeliveriesForClient();
+        List<Delivery> GetDeliveriesForClient(int ClientID);
         [OperationContract]
-        List<Delivery> GetDeliveriesByCompany();
+        List<Delivery> GetDeliveriesByCompany(int DeliveryID);
         //<-----Adding To Order----->
-        [OperationContract]
-        int AddOrderItem();
-        */
+       // [OperationContract]
+        //int AddOrderItem();
+        
 
     }
 
