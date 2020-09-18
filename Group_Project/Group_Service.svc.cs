@@ -406,6 +406,56 @@ namespace Group_Project
 
             return p;
         }
+		
+		        public List<Product> getproductbyprice(decimal min, decimal max)
+        {
+            var list = new List<Product>();
+
+            dynamic li = (from l in db.Products
+                          where l.Unit_Price > min && l.Unit_Price < max
+                          select l).FirstOrDefault();
+
+            foreach (Product p in li)
+            {
+                var ps = getProduct(p.Product_Id);
+                list.Add(ps);
+            }
+
+            return list;
+        }
+
+        public List<Product_Size> getproductbysize(int sizeid)
+        {
+            var size = new List<Product_Size>();
+
+            dynamic prod = (from t in db.Product_Sizes
+                            where t.Size_Id.Equals(sizeid)
+                            select t);
+
+            foreach (Product_Size p in prod)
+            {
+                var ps = getsproductsize(p.Size_Id);
+                size.Add(ps);
+            }
+
+            return size;
+        }
+		
+		        public Product_Size getsproductsize(int sid)
+        {
+            var prod = (from p in db.Product_Sizes
+                      where p.Size_Id.Equals(sid)
+                      select p).FirstOrDefault();
+
+            if (prod == null)
+            {
+                return null;
+            }
+            else
+            {
+                return prod;
+            }
+        }
 
         public List<Order_Item> getallitems()
         {

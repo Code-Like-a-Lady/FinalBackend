@@ -168,8 +168,12 @@ namespace Group_Project
         List<Product> getProductsbycategory(int maskid);
         [OperationContract]
         string deleteProduct(int P_Id);
-
-
+		[OperationContract]
+		List<Product> getproductbyprice(decimal min, decimal max);
+		[OperationContract]
+		List<Product_Size> getproductbysize(int sizeid);
+		[OperationContract]
+		Product_Size getsproductsize(int sid);
         //Report
 
 
