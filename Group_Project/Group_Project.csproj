@@ -66,33 +66,47 @@
     <Content Include="App_Data\Group_Database_log.ldf">
       <DependentUpon>Group_Database.mdf</DependentUpon>
     </Content>
-    <Content Include="Group_Service.svc" />
+    <Content Include="bin\Group_Project.dll" />
+    <Content Include="bin\Group_Project.pdb" />
+    <Content Include="GroupService.svc" />
+    <Content Include="Group_Database_log.ldf" />
+    <Content Include="obj\Debug\Group_Project.csproj.FileListAbsolute.txt" />
+    <Content Include="obj\Debug\Group_Project.dll" />
+    <Content Include="obj\Debug\Group_Project.pdb" />
+    <Content Include="obj\Debug\TempPE\DataClasses1.designer.cs.dll" />
+    <Content Include="obj\Debug\TempPE\GroupDataClasses.designer.cs.dll" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataClasses1.designer.cs">
+    <Compile Include="GroupDataClasses.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>DataClasses1.dbml</DependentUpon>
+      <DependentUpon>GroupDataClasses.dbml</DependentUpon>
     </Compile>
-    <Compile Include="Group_Service.svc.cs">
-      <DependentUpon>Group_Service.svc</DependentUpon>
+    <Compile Include="GroupService.svc.cs">
+      <DependentUpon>GroupService.svc</DependentUpon>
     </Compile>
-    <Compile Include="IGroup_Service.cs" />
+    <Compile Include="IGroupService.cs" />
+    <Compile Include="obj\Debug\.NETFramework,Version=v4.7.2.AssemblyAttributes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="DataClasses1.dbml">
+    <Content Include="bin\Group_Project.dll.config" />
+    <Content Include="GroupDataClasses.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
-      <LastGenOutput>DataClasses1.designer.cs</LastGenOutput>
+      <LastGenOutput>GroupDataClasses.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </Content>
-    <None Include="DataClasses1.dbml.layout">
-      <DependentUpon>DataClasses1.dbml</DependentUpon>
+    <None Include="GroupDataClasses.dbml.layout">
+      <DependentUpon>GroupDataClasses.dbml</DependentUpon>
     </None>
+    <Content Include="obj\Debug\DesignTimeResolveAssemblyReferences.cache" />
+    <Content Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
+    <Content Include="obj\Debug\Group_Project.csproj.CoreCompileInputs.cache" />
+    <Content Include="obj\Debug\Group_Project.csprojAssemblyReference.cache" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -100,6 +114,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
