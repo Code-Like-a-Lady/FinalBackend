@@ -118,7 +118,7 @@ namespace Group_Project
         string Addcustom(int pid, int filter, string size);
 
         [OperationContract]
-        string Editcustom(int pid, int filter, string size, int id);
+        string Editcustom(int filter, string size, string colour, int _ID, string imageURL = "");
 
         [OperationContract]
         List<Product> Getallproducts();
