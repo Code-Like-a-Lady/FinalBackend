@@ -527,56 +527,6 @@ namespace Group_Project
                 return "product does not exist";
             }
         }
-
-        public string Addcustom(int filter, string size, string colour, string imageURL = "")
-        {
-            if (imageURL != null)
-            {
-                var newtype = new Custom_Product
-                {
-                    Filter = filter,
-                    Custom_Size = size,
-                    Colour = colour,
-                    Logo = imageURL
-                };
-
-                db.Custom_Products.InsertOnSubmit(newtype);
-
-                try
-                {
-                    db.SubmitChanges();
-                    return "added";
-                }
-                catch (Exception ex)
-                {
-                    ex.GetBaseException();
-                    return "not added";
-                }
-            }
-            else
-            {
-                var newtype = new Custom_Product
-                {
-                    Filter = filter,
-                    Custom_Size = size,
-                    Colour = colour
-                };
-
-                db.Custom_Products.InsertOnSubmit(newtype);
-
-                try
-                {
-                    db.SubmitChanges();
-                    return "added";
-                }
-                catch (Exception ex)
-                {
-                    ex.GetBaseException();
-                    return "not added";
-                }
-            }
-        }
-
         public string Editcustom(int filter, string size, string colour, int _ID, string imageURL = "")
         {
             //Get custom product based on client id 
@@ -856,21 +806,18 @@ namespace Group_Project
             }
         }
 
-        public string Addcustom(int pid, int filter, string size)
+        public string Addcustom(int filter, string size, string colour, string imageURL = "")
         {
-            var ty = (from p in db.Custom_Products
-                      where p.Filter.Equals(filter)
-                      select p).FirstOrDefault();
-
-
-            if (ty == null)
+            if (imageURL != null)
             {
                 var newtype = new Custom_Product
                 {
                     Filter = filter,
-                    Custom_Size = size
-
+                    Custom_Size = size,
+                    Colour = colour,
+                    Logo = imageURL
                 };
+
                 db.Custom_Products.InsertOnSubmit(newtype);
 
                 try
@@ -886,9 +833,26 @@ namespace Group_Project
             }
             else
             {
-                return "error";
-            }
+                var newtype = new Custom_Product
+                {
+                    Filter = filter,
+                    Custom_Size = size,
+                    Colour = colour
+                };
 
+                db.Custom_Products.InsertOnSubmit(newtype);
+
+                try
+                {
+                    db.SubmitChanges();
+                    return "added";
+                }
+                catch (Exception ex)
+                {
+                    ex.GetBaseException();
+                    return "not added";
+                }
+            }
         }
 
         public string Editsize(string name, string dimen, int id)

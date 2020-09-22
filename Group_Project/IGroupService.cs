@@ -115,7 +115,7 @@ namespace Group_Project
         string Updatepsize(int sizeid, int psize, int id);
 
         [OperationContract]
-        string Addcustom(int pid, int filter, string size);
+        string Addcustom(int filter, string size, string colour, string imageURL = "");
 
         [OperationContract]
         string Editcustom(int filter, string size, string colour, int _ID, string imageURL = "");
