@@ -115,10 +115,10 @@ namespace Group_Project
         string Updatepsize(int sizeid, int psize, int id);
 
         [OperationContract]
-        string Addcustom(int pid, int filter, string size);
+        string Addcustom(int filter, string size, string colour, string imageURL = "");
 
         [OperationContract]
-        string Editcustom(int pid, int filter, string size, int id);
+        string Editcustom(int filter, string size, string colour, int _ID, string imageURL = "");
 
         [OperationContract]
         List<Product> Getallproducts();
@@ -175,29 +175,11 @@ namespace Group_Project
         [OperationContract]
         List<Delivery> GetAllDeliveries();
         [OperationContract]
-        Delivery GetDeliveryForOrder(int orderID);
-        [OperationContract]
         List<Delivery> GetDeliveriesForClient(int ClientID);
         [OperationContract]
-        List<Order_Table> GetDeliveriesByCompany(int DeliveryID);
-        [OperationContract]
-        Delivery GetDelivery(int DeliveryID);
-
-        //<-----Adding To Cart----->
-
-        [OperationContract]
-        bool AddtoCart(int ClientId, int ProductID, int quantity, Decimal price);
-        [OperationContract]
-        bool EditFromCart(int ClientId, int ProductID, int quantity, Decimal price);
-        [OperationContract]
-        List<Cart> GetAllCartItemsForClient(int ClientID);
-        [OperationContract]
-        List<Product> GetAllProductsInCart(int ClientID);
-        [OperationContract]
-        Cart GetCartItem(int ClientID, int Prod_Id);
-        [OperationContract]
-        bool RemoveFromCart(int ClientId, int ProdID);
-        [OperationContract]
-        bool ClearTheCart(int ClientID);
+        List<Delivery> GetDeliveriesByCompany(int DeliveryID);
+        //<-----Adding To Order----->
+        // [OperationContract]
+        //int AddOrderItem();
     }
 }

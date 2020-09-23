@@ -1,5 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
+<<<<<<< HEAD
 <ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 13.125, 10.625" name="GroupDataClasses">
+=======
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 13.125, 9.75" name="GroupDataClasses">
+>>>>>>> master
   <DataContextMoniker Name="/GroupDataClassesDataContext" />
   <nestedChildShapes>
     <classShape Id="bc845130-eae4-43bd-aa69-7950e4862223" absoluteBounds="0.5, 1, 2, 1.1939925130208333">
@@ -74,10 +78,17 @@
         <elementListCompartment Id="992e5c41-6edd-4d77-affd-411b4fbcfab5" absoluteBounds="10.89, 1.835, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
+<<<<<<< HEAD
     <classShape Id="c2bb79e3-6cea-4705-adf4-f13b19d7c11b" absoluteBounds="6.125, 7.625, 2, 2.7324039713541666">
       <DataClassMoniker Name="/GroupDataClassesDataContext/Product" />
       <nestedChildShapes>
         <elementListCompartment Id="2b0e2a1f-4396-4ac5-8b38-97b6e73194d6" absoluteBounds="6.1400000000000006, 8.085, 1.9700000000000002, 2.1724039713541665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+=======
+    <classShape Id="c2bb79e3-6cea-4705-adf4-f13b19d7c11b" absoluteBounds="9.25, 6.375, 2, 2.7324039713541666">
+      <DataClassMoniker Name="/GroupDataClassesDataContext/Product" />
+      <nestedChildShapes>
+        <elementListCompartment Id="2b0e2a1f-4396-4ac5-8b38-97b6e73194d6" absoluteBounds="9.265, 6.835, 1.9700000000000002, 2.1724039713541665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+>>>>>>> master
       </nestedChildShapes>
     </classShape>
     <classShape Id="73378709-7fa5-4264-80a8-e0acc344925b" absoluteBounds="9.25, 4.75, 2, 1.1939925130208333">
@@ -104,11 +115,14 @@
         <elementListCompartment Id="e8a9f4a9-27d5-43cb-9a6c-d6146a9942a9" absoluteBounds="5.515, 1.085, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
+<<<<<<< HEAD
     <classShape Id="bdd0d349-7ec2-4c90-8bf4-c580cbc474c9" absoluteBounds="0.5, 7.875, 2, 1.5785953776041666">
       <DataClassMoniker Name="/GroupDataClassesDataContext/Cart" />
       <nestedChildShapes>
         <elementListCompartment Id="85f455e2-a6c6-4c7c-a5b0-396abddded2e" absoluteBounds="0.515, 8.335, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
+=======
+>>>>>>> master
   </nestedChildShapes>
 </ordesignerObjectsDiagram>
