@@ -1267,7 +1267,6 @@ namespace Group_Project
                 return EditFromCart(ClientId, ProductID, quantity, price);
             }
         }
-<<<<<<< Updated upstream
 
         //Edits an Item already in the cart
         public bool EditFromCart(int ClientId, int ProductID, int quantity, Decimal price)
@@ -1309,49 +1308,6 @@ namespace Group_Project
 
         }
 
-=======
-
-        //Edits an Item already in the cart
-        public bool EditFromCart(int ClientId, int ProductID, int quantity, Decimal price)
-        {
-            var cart = GetCartItem(ClientId, ProductID);
-
-            if(cart!=null)
-            {
-                cart.Quantity = quantity;
-                cart.Price = price;
-                try
-                {
-                    //update
-                    db.SubmitChanges();
-                    return true;
-                }
-                catch (IndexOutOfRangeException ex)
-                {
-                    ex.GetBaseException();
-                    return false;
-                }
-            }
-            else
-            {
-                return false;
-            }
-
-
-        }
-
-        //Returns a single cart item
-        public Cart GetCartItem(int ClientID, int Prod_Id)
-        {
-            Cart cart = new Cart();
-            cart = (from c in db.Carts
-                    where c.Client_Id.Equals(ClientID) && c.Product_Id.Equals(Prod_Id)
-                    select c).FirstOrDefault();
-            return cart;
-
-        }
-
->>>>>>> Stashed changes
         //Returns all the items from a client
         public List<Cart> GetAllCartItemsForClient(int ClientID)
         {
