@@ -5,10 +5,3 @@ C:\Users\Laaiqah\Desktop\IFM Team 2\Backend_Joint\Group_Project\bin\Group_Projec
 C:\Users\Laaiqah\Desktop\IFM Team 2\Backend_Joint\Group_Project\obj\Debug\Group_Project.dll
 C:\Users\Laaiqah\Desktop\IFM Team 2\Backend_Joint\Group_Project\obj\Debug\Group_Project.pdb
 C:\Users\Laaiqah\Desktop\IFM Team 2\Backend_Joint\Group_Project\obj\Debug\Group_Project.csprojAssemblyReference.cache
-C:\Users\Laaiqah\Desktop\IFM Team 2\FinalBackend\Group_Project\bin\Group_Project.dll.config
-C:\Users\Laaiqah\Desktop\IFM Team 2\FinalBackend\Group_Project\bin\Group_Project.dll
-C:\Users\Laaiqah\Desktop\IFM Team 2\FinalBackend\Group_Project\bin\Group_Project.pdb
-C:\Users\Laaiqah\Desktop\IFM Team 2\FinalBackend\Group_Project\obj\Debug\Group_Project.csprojAssemblyReference.cache
-C:\Users\Laaiqah\Desktop\IFM Team 2\FinalBackend\Group_Project\obj\Debug\Group_Project.csproj.CoreCompileInputs.cache
-C:\Users\Laaiqah\Desktop\IFM Team 2\FinalBackend\Group_Project\obj\Debug\Group_Project.dll
-C:\Users\Laaiqah\Desktop\IFM Team 2\FinalBackend\Group_Project\obj\Debug\Group_Project.pdb
