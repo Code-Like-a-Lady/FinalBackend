@@ -178,8 +178,23 @@ namespace Group_Project
         List<Delivery> GetDeliveriesForClient(int ClientID);
         [OperationContract]
         List<Delivery> GetDeliveriesByCompany(int DeliveryID);
+		[OperationContract]
+		Delivery GetDeliveryForOrder(int orderID);
+		[OperationContract]
+		Delivery GetDelivery(int DeliveryID);
         //<-----Adding To Order----->
-        // [OperationContract]
-        //int AddOrderItem();
+		bool AddtoCart(int ClientId,int ProductID,int quantity,Decimal price);
+		[OperationContract]
+		bool EditFromCart(int ClientId, int ProductID, int quantity, Decimal price);
+		[OperationContract]
+		Cart GetCartItem(int ClientID, int Prod_Id);
+		[OperationContract]
+		List<Cart> GetAllCartItemsForClient(int ClientID);
+		[OperationContract]
+		List<Product> GetAllProductsInCart(int ClientID);
+		[OperationContract]
+		bool RemoveFromCart(int ClientId, int ProdID);
+		[OperationContract]
+		bool ClearTheCart(int ClientID);
     }
 }
