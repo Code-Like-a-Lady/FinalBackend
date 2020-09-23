@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Security.Cryptography;
 using System.ServiceModel;
 using System.Text;
 
@@ -319,26 +320,30 @@ namespace Group_Project
 
         public string DeleteUser(int id)
         {
-            var user = GetUser(id);
+            User_Table user = GetUser(id);
 
-            var del = from u in db.User_Tables
+            user =( from u in db.User_Tables
                       where u.User_Id.Equals(id)
-                      select u;
+                      select u).FirstOrDefault();
 
-            foreach (var us in del)
-            {
-                db.User_Tables.DeleteOnSubmit(us);
-            }
-
-            try
-            {
-                db.SubmitChanges();
-                return " Deleted";
-            }
-            catch (Exception e)
+            if (user == null)
             {
                 return "User doesn't exist";
             }
+            else
+            {
+                user.Active = 0;
+                try
+                {
+                    db.SubmitChanges();
+                    return " Deleted";
+                }
+                catch (Exception e)
+                {
+                    return "User doesn't exist";
+                }
+            }
+
 
         }
 
@@ -1160,7 +1165,10 @@ namespace Group_Project
 
 
 
-        //<---------------------------------------------Shopping Cart------------------------------------------------->
+        //<---------------------------------------------Shopping Cart Functions------------------------------------------------->
+
+        //<-----Deliveries----->
+        //Returns all the deliveries in the database
         public List<Delivery> GetAllDeliveries()
         {
             List<Delivery> delivery = new List<Delivery>();
@@ -1174,24 +1182,187 @@ namespace Group_Project
             return delivery;
         }
 
+        //Returns a deliver, given an ID
+        public Delivery GetDelivery(int DeliveryID)
+        {
+            Delivery del = new Delivery();
+            del = (from d in db.Deliveries
+                   where d.Delivery_Id.Equals(DeliveryID)
+                   select d).FirstOrDefault();
+
+            return del;
+        }
+
+        //Returns the Delivery for an order
+        public Delivery GetDeliveryForOrder(int orderID)
+        {
+            //Get the order 
+            Order_Table ord = GetInvoice(orderID);
+            Delivery del = new Delivery();
+            del = GetDelivery(ord.Delivery_Id);
+
+            return del;
+        }
+        //Returns all the deliveries done by a client
         public List<Delivery> GetDeliveriesForClient(int ClientID)
         {
             List<Delivery> delivery = new List<Delivery>();
+            dynamic prod = (from t in db.PayClients
+                            where t.User_Id.Equals(ClientID)
+                            select t);
+            foreach (PayClient or in prod)
+            {
+                var ord = GetDeliveryForOrder(or.Order_Id);
+                delivery.Add(ord);
+            }
+
             return delivery;
 
         }
 
-        public List<Delivery> GetDeliveriesByCompany(int DeliveryID)
+        //Gets the orders dne by a delivery company
+        public List<Order_Table> GetDeliveriesByCompany(int DeliveryID)
         {
-            List<Delivery> delivery = new List<Delivery>();
-            return delivery;
+            List<Order_Table> Orders = new List<Order_Table>();
+            dynamic del = (from d in db.Order_Tables
+                           where d.Delivery_Id.Equals(DeliveryID)
+                           select d).ToList();
+            foreach(Order_Table or in del)
+            {
+                Orders.Add(or);
+            }
+            return Orders;
         }
 
-        //<-----Adding To Order----->
+        //<-----Adding To Cart----->
+        //Adds to cart
+        public bool AddtoCart(int ClientId,int ProductID,int quantity,Decimal price)
+        {
+            var cart = (from c in db.Carts
+                        where c.Client_Id.Equals(ClientId) && c.Product_Id.Equals(ProductID)
+                        select c).FirstOrDefault();
+            if(cart==null)
+            {
+                var newCart = new Cart()
+                {
+                    Client_Id = ClientId,
+                    Product_Id = ProductID,
+                    Quantity = quantity,
+                    Price = price,
+                };
+                db.Carts.InsertOnSubmit(newCart);
+                try
+                {
+                    db.SubmitChanges();
+                    return true;
+                }catch(Exception ex)
+                {
+                    ex.GetBaseException();
+                    return false;
+                }
+            }
+            else
+            {
+                //if item exists edit it
+                return EditFromCart(ClientId, ProductID, quantity, price);
+            }
+        }
 
-        //public int AddOrderItem()
-        //{
+        //Edits an Item already in the cart
+        public bool EditFromCart(int ClientId, int ProductID, int quantity, Decimal price)
+        {
+            var cart = GetCartItem(ClientId, ProductID);
 
-        // }
+            if(cart!=null)
+            {
+                cart.Quantity = quantity;
+                cart.Price = price;
+                try
+                {
+                    //update
+                    db.SubmitChanges();
+                    return true;
+                }
+                catch (IndexOutOfRangeException ex)
+                {
+                    ex.GetBaseException();
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+
+
+        }
+
+        //Returns a single cart item
+        public Cart GetCartItem(int ClientID, int Prod_Id)
+        {
+            Cart cart = new Cart();
+            cart = (from c in db.Carts
+                    where c.Client_Id.Equals(ClientID) && c.Product_Id.Equals(Prod_Id)
+                    select c).FirstOrDefault();
+            return cart;
+
+        }
+
+        //Returns all the items from a client
+        public List<Cart> GetAllCartItemsForClient(int ClientID)
+        {
+            List<Cart> ShoppingCart = new List<Cart>();
+            dynamic shop = (from s in db.Carts
+                            where s.Client_Id.Equals(ClientID)
+                            select s).ToList();
+            foreach(Cart c in shop)
+            {
+                ShoppingCart.Add(c);
+            }
+            return ShoppingCart;
+        }
+
+        public List<Product> GetAllProductsInCart(int ClientID)
+        { 
+             dynamic cartitems = GetAllCartItemsForClient(ClientID);
+            List<Product> products = new List<Product>();
+            foreach (Cart c in cartitems)
+            {
+                var pro = GetProduct(c.Product_Id);
+                products.Add(pro);
+            }
+            return products;
+        }
+
+        //Remove an item from the cart
+        public bool RemoveFromCart(int ClientId, int ProdID)
+        {
+            Cart cart = GetCartItem(ClientId, ProdID);
+            db.Carts.DeleteOnSubmit(cart);
+            try
+            {
+                db.SubmitChanges();
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+
+        }
+        //Remove Everything from cart
+        public bool ClearTheCart(int ClientID)
+        {
+            dynamic cartitems = GetAllCartItemsForClient(ClientID);
+            bool Removed= true;
+            foreach(Cart c in cartitems)
+            {
+                Removed = RemoveFromCart(c.Client_Id, c.Product_Id);
+
+            }
+            return Removed;
+        }
+
+        //<-----Moving from cart to Order----->
     }
 }
