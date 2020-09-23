@@ -104,10 +104,10 @@
         <elementListCompartment Id="e8a9f4a9-27d5-43cb-9a6c-d6146a9942a9" absoluteBounds="5.515, 1.085, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="4ab55698-8ca6-4538-9af3-471cdaa7fc03" absoluteBounds="0.5, 8.25, 2, 1.5785953776041666">
+    <classShape Id="bdd0d349-7ec2-4c90-8bf4-c580cbc474c9" absoluteBounds="0.5, 7.875, 2, 1.5785953776041666">
       <DataClassMoniker Name="/GroupDataClassesDataContext/Cart" />
       <nestedChildShapes>
-        <elementListCompartment Id="8ceee95c-e31c-4892-8b16-6910eae71d73" absoluteBounds="0.51500000000000012, 8.71, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="85f455e2-a6c6-4c7c-a5b0-396abddded2e" absoluteBounds="0.515, 8.335, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
   </nestedChildShapes>
