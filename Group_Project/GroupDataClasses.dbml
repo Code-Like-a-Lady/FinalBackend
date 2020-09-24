@@ -6,10 +6,28 @@
       <Column Name="Surname" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
+  <Table Name="dbo.Cart" Member="Carts">
+    <Type Name="Cart">
+      <Column Name="Client_Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Product_Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Quantity" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Price" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
   <Table Name="dbo.Client" Member="Clients">
     <Type Name="Client">
       <Column Name="User_Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="Business_Type" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Custom_Product" Member="Custom_Products">
+    <Type Name="Custom_Product">
+      <Column Name="CustomProduct_Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Filter" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Custom_Size" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Colour" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Logo" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="Client_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
     </Type>
   </Table>
   <Table Name="dbo.Delivery" Member="Deliveries">
@@ -40,6 +58,7 @@
       <Column Name="Guest_FullName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
       <Column Name="Guest_Address" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
       <Column Name="Order_Id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Contact_Number" Type="System.String" DbType="Char(10) NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
   <Table Name="dbo.Mask_Type" Member="Mask_Types">
@@ -135,24 +154,6 @@
       <Column Name="Date_Created" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="Active" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Address" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
-    </Type>
-  </Table>
-  <Table Name="dbo.Custom_Product" Member="Custom_Products">
-    <Type Name="Custom_Product">
-      <Column Name="CustomProduct_Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="Filter" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Custom_Size" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="Colour" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="Logo" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
-      <Column Name="Client_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.Cart" Member="Carts">
-    <Type Name="Cart">
-      <Column Name="Client_Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="Product_Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="Quantity" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Price" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
 </Database>

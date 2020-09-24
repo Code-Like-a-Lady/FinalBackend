@@ -1363,6 +1363,31 @@ namespace Group_Project
             return Removed;
         }
 
+        public decimal CalculateTotalPrice(int ClientID)
+        {
+            Decimal Total = 0;
+            List<Cart> products = new List<Cart>();
+            products = GetAllCartItemsForClient(ClientID);
+            foreach(Cart c in products)
+            {
+                Total += c.Price;
+            }
+            return Total;
+        }
+
+        public int CalculateTotalQuantity(int ClientID)
+        {
+            int Total = 0;
+            List<Cart> products = new List<Cart>();
+            products = GetAllCartItemsForClient(ClientID);
+            foreach (Cart c in products)
+            {
+                Total += c.Quantity;
+            }
+            return Total;
+        }
         //<-----Moving from cart to Order----->
+
+        //<-----Client Information---->
     }
 }

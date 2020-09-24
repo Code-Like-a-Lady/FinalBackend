@@ -182,7 +182,8 @@ namespace Group_Project
 		Delivery GetDeliveryForOrder(int orderID);
 		[OperationContract]
 		Delivery GetDelivery(int DeliveryID);
-        //<-----Adding To Order----->
+
+        //<-----Adding To Cart----->
 		bool AddtoCart(int ClientId,int ProductID,int quantity,Decimal price);
 		[OperationContract]
 		bool EditFromCart(int ClientId, int ProductID, int quantity, Decimal price);
@@ -196,5 +197,11 @@ namespace Group_Project
 		bool RemoveFromCart(int ClientId, int ProdID);
 		[OperationContract]
 		bool ClearTheCart(int ClientID);
+        [OperationContract]
+        decimal CalculateTotalPrice(int ClientID);
+        [OperationContract]
+        int CalculateTotalQuantity(int ClientID);
+
+        //<-----Adding To Order----->
     }
 }

@@ -95,6 +95,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="bin\Group_Project.dll.config" />
+    <Content Include="obj\Debug\DesignTimeResolveAssemblyReferences.cache" />
+    <Content Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
+    <Content Include="obj\Debug\Group_Project.csproj.CoreCompileInputs.cache" />
+    <Content Include="obj\Debug\Group_Project.csprojAssemblyReference.cache" />
     <Content Include="GroupDataClasses.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
       <LastGenOutput>GroupDataClasses.designer.cs</LastGenOutput>
@@ -103,10 +107,6 @@
     <None Include="GroupDataClasses.dbml.layout">
       <DependentUpon>GroupDataClasses.dbml</DependentUpon>
     </None>
-    <Content Include="obj\Debug\DesignTimeResolveAssemblyReferences.cache" />
-    <Content Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
-    <Content Include="obj\Debug\Group_Project.csproj.CoreCompileInputs.cache" />
-    <Content Include="obj\Debug\Group_Project.csprojAssemblyReference.cache" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
