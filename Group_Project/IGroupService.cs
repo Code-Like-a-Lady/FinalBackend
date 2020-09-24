@@ -177,7 +177,7 @@ namespace Group_Project
         [OperationContract]
         List<Delivery> GetDeliveriesForClient(int ClientID);
         [OperationContract]
-        List<Delivery> GetDeliveriesByCompany(int DeliveryID);
+        List<Order_Table> GetDeliveriesByCompany(int DeliveryID);
 		[OperationContract]
 		Delivery GetDeliveryForOrder(int orderID);
 		[OperationContract]
