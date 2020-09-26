@@ -165,7 +165,23 @@ namespace Group_Project
         [OperationContract]
         Product_Size Getsproductsize(int sid);
 
-      
+        //-----------------CHANGES-------
+        //getting allsizes
+        [OperationContract]
+        List<Size_Table> Getallsizes();
+
+        //getting all product sizes
+        [OperationContract]
+        List<Product_Size> Getallproductsizes();
+
+        //adding and admin
+        [OperationContract]
+        string AddAdmin(User_Table user, string surname);
+
+        [OperationContract]
+        string Getcategorybyname(string name);
+
+
 
         //Report
 

@@ -1160,9 +1160,85 @@ namespace Group_Project
 
         }
 
+        //-----------------CHANGES-------
+
+        public string Getcategorybyname(string name)
+        {
+            var cat = (from n in db.Mask_Types
+                       where n.Name.Equals(name)
+                       select n).FirstOrDefault();
+            if (cat == null)
+            {
+                return " no cate found";
+            }
+            else
+            {
+                return " it exists";
+            }
+        }
+
+        public List<Size_Table> Getallsizes()
+        {
+            List<Size_Table> sizes = new List<Size_Table>();
+
+            dynamic siz = (from s in db.Size_Tables
+                           select s).ToList();
+
+            foreach (Size_Table sz in siz)
+            {
+                sizes.Add(sz);
+            }
+
+            return sizes;
+
+        }
+
+        public List<Product_Size> Getallproductsizes()
+        {
+            List<Product_Size> psizes = new List<Product_Size>();
+
+            dynamic psiz = (from s in db.Product_Sizes
+                            select s).ToList();
+
+            foreach (Product_Size sz in psiz)
+            {
+                psizes.Add(sz);
+            }
+
+            return psizes;
+        }
+
+        public string AddAdmin(User_Table user, string surname)
+        {
+            var admin = (from a in db.User_Tables
+                         where a.User_Id.Equals(user.User_Id)
+                         select a).FirstOrDefault();
+            if (admin == null)
+            {
+                var newAdmin = new Admin()
+                {
+                    User_Id = user.User_Id,
+                    Surname = surname,
+                };
+                db.Admins.InsertOnSubmit(newAdmin);
+                try
+                {
+                    db.SubmitChanges();
+                    return " added";
+                }
+                catch (Exception ex)
+                {
+                    ex.GetBaseException();
+                    return "Something went wrong try again";
+                }
+            }
+            else
+            {
+                return " Please try again";
+            }
 
 
-
+        }
 
 
         //<---------------------------------------------Shopping Cart Functions------------------------------------------------->
