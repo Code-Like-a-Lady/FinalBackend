@@ -66,9 +66,6 @@ namespace Group_Project
     partial void InsertPayClient(PayClient instance);
     partial void UpdatePayClient(PayClient instance);
     partial void DeletePayClient(PayClient instance);
-    partial void InsertPayment(Payment instance);
-    partial void UpdatePayment(Payment instance);
-    partial void DeletePayment(Payment instance);
     partial void InsertPaymentType(PaymentType instance);
     partial void UpdatePaymentType(PaymentType instance);
     partial void DeletePaymentType(PaymentType instance);
@@ -84,6 +81,9 @@ namespace Group_Project
     partial void InsertUser_Table(User_Table instance);
     partial void UpdateUser_Table(User_Table instance);
     partial void DeleteUser_Table(User_Table instance);
+    partial void InsertPayment(Payment instance);
+    partial void UpdatePayment(Payment instance);
+    partial void DeletePayment(Payment instance);
     #endregion
 		
 		public GroupDataClassesDataContext() : 
@@ -212,14 +212,6 @@ namespace Group_Project
 			}
 		}
 		
-		public System.Data.Linq.Table<Payment> Payments
-		{
-			get
-			{
-				return this.GetTable<Payment>();
-			}
-		}
-		
 		public System.Data.Linq.Table<PaymentType> PaymentTypes
 		{
 			get
@@ -257,6 +249,14 @@ namespace Group_Project
 			get
 			{
 				return this.GetTable<User_Table>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Payment> Payments
+		{
+			get
+			{
+				return this.GetTable<Payment>();
 			}
 		}
 	}
@@ -1941,188 +1941,6 @@ namespace Group_Project
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Payment")]
-	public partial class Payment : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _Payment_Id;
-		
-		private string _Card_num;
-		
-		private System.Data.Linq.Binary _CVV;
-		
-		private System.DateTime _Expiry_Date;
-		
-		private string _Cardholder_Name;
-		
-		private int _PaymentType_Id;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnPayment_IdChanging(int value);
-    partial void OnPayment_IdChanged();
-    partial void OnCard_numChanging(string value);
-    partial void OnCard_numChanged();
-    partial void OnCVVChanging(System.Data.Linq.Binary value);
-    partial void OnCVVChanged();
-    partial void OnExpiry_DateChanging(System.DateTime value);
-    partial void OnExpiry_DateChanged();
-    partial void OnCardholder_NameChanging(string value);
-    partial void OnCardholder_NameChanged();
-    partial void OnPaymentType_IdChanging(int value);
-    partial void OnPaymentType_IdChanged();
-    #endregion
-		
-		public Payment()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Payment_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int Payment_Id
-		{
-			get
-			{
-				return this._Payment_Id;
-			}
-			set
-			{
-				if ((this._Payment_Id != value))
-				{
-					this.OnPayment_IdChanging(value);
-					this.SendPropertyChanging();
-					this._Payment_Id = value;
-					this.SendPropertyChanged("Payment_Id");
-					this.OnPayment_IdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Card_num", DbType="VarChar(16) NOT NULL", CanBeNull=false)]
-		public string Card_num
-		{
-			get
-			{
-				return this._Card_num;
-			}
-			set
-			{
-				if ((this._Card_num != value))
-				{
-					this.OnCard_numChanging(value);
-					this.SendPropertyChanging();
-					this._Card_num = value;
-					this.SendPropertyChanged("Card_num");
-					this.OnCard_numChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CVV", DbType="Binary(50) NOT NULL", CanBeNull=false, UpdateCheck=UpdateCheck.Never)]
-		public System.Data.Linq.Binary CVV
-		{
-			get
-			{
-				return this._CVV;
-			}
-			set
-			{
-				if ((this._CVV != value))
-				{
-					this.OnCVVChanging(value);
-					this.SendPropertyChanging();
-					this._CVV = value;
-					this.SendPropertyChanged("CVV");
-					this.OnCVVChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Expiry_Date", DbType="Date NOT NULL")]
-		public System.DateTime Expiry_Date
-		{
-			get
-			{
-				return this._Expiry_Date;
-			}
-			set
-			{
-				if ((this._Expiry_Date != value))
-				{
-					this.OnExpiry_DateChanging(value);
-					this.SendPropertyChanging();
-					this._Expiry_Date = value;
-					this.SendPropertyChanged("Expiry_Date");
-					this.OnExpiry_DateChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Cardholder_Name", DbType="VarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string Cardholder_Name
-		{
-			get
-			{
-				return this._Cardholder_Name;
-			}
-			set
-			{
-				if ((this._Cardholder_Name != value))
-				{
-					this.OnCardholder_NameChanging(value);
-					this.SendPropertyChanging();
-					this._Cardholder_Name = value;
-					this.SendPropertyChanged("Cardholder_Name");
-					this.OnCardholder_NameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PaymentType_Id", DbType="Int NOT NULL")]
-		public int PaymentType_Id
-		{
-			get
-			{
-				return this._PaymentType_Id;
-			}
-			set
-			{
-				if ((this._PaymentType_Id != value))
-				{
-					this.OnPaymentType_IdChanging(value);
-					this.SendPropertyChanging();
-					this._PaymentType_Id = value;
-					this.SendPropertyChanged("PaymentType_Id");
-					this.OnPaymentType_IdChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.PaymentType")]
 	public partial class PaymentType : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -2936,6 +2754,188 @@ namespace Group_Project
 					this._Address = value;
 					this.SendPropertyChanged("Address");
 					this.OnAddressChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Payment")]
+	public partial class Payment : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Payment_Id;
+		
+		private string _Card_num;
+		
+		private string _CVV;
+		
+		private string _Expiry_Date;
+		
+		private string _Cardholder_Name;
+		
+		private int _PaymentType_Id;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnPayment_IdChanging(int value);
+    partial void OnPayment_IdChanged();
+    partial void OnCard_numChanging(string value);
+    partial void OnCard_numChanged();
+    partial void OnCVVChanging(string value);
+    partial void OnCVVChanged();
+    partial void OnExpiry_DateChanging(string value);
+    partial void OnExpiry_DateChanged();
+    partial void OnCardholder_NameChanging(string value);
+    partial void OnCardholder_NameChanged();
+    partial void OnPaymentType_IdChanging(int value);
+    partial void OnPaymentType_IdChanged();
+    #endregion
+		
+		public Payment()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Payment_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Payment_Id
+		{
+			get
+			{
+				return this._Payment_Id;
+			}
+			set
+			{
+				if ((this._Payment_Id != value))
+				{
+					this.OnPayment_IdChanging(value);
+					this.SendPropertyChanging();
+					this._Payment_Id = value;
+					this.SendPropertyChanged("Payment_Id");
+					this.OnPayment_IdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Card_num", DbType="VarChar(16) NOT NULL", CanBeNull=false)]
+		public string Card_num
+		{
+			get
+			{
+				return this._Card_num;
+			}
+			set
+			{
+				if ((this._Card_num != value))
+				{
+					this.OnCard_numChanging(value);
+					this.SendPropertyChanging();
+					this._Card_num = value;
+					this.SendPropertyChanged("Card_num");
+					this.OnCard_numChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CVV", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string CVV
+		{
+			get
+			{
+				return this._CVV;
+			}
+			set
+			{
+				if ((this._CVV != value))
+				{
+					this.OnCVVChanging(value);
+					this.SendPropertyChanging();
+					this._CVV = value;
+					this.SendPropertyChanged("CVV");
+					this.OnCVVChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Expiry_Date", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string Expiry_Date
+		{
+			get
+			{
+				return this._Expiry_Date;
+			}
+			set
+			{
+				if ((this._Expiry_Date != value))
+				{
+					this.OnExpiry_DateChanging(value);
+					this.SendPropertyChanging();
+					this._Expiry_Date = value;
+					this.SendPropertyChanged("Expiry_Date");
+					this.OnExpiry_DateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Cardholder_Name", DbType="VarChar(4) NOT NULL", CanBeNull=false)]
+		public string Cardholder_Name
+		{
+			get
+			{
+				return this._Cardholder_Name;
+			}
+			set
+			{
+				if ((this._Cardholder_Name != value))
+				{
+					this.OnCardholder_NameChanging(value);
+					this.SendPropertyChanging();
+					this._Cardholder_Name = value;
+					this.SendPropertyChanged("Cardholder_Name");
+					this.OnCardholder_NameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PaymentType_Id", DbType="Int NOT NULL")]
+		public int PaymentType_Id
+		{
+			get
+			{
+				return this._PaymentType_Id;
+			}
+			set
+			{
+				if ((this._PaymentType_Id != value))
+				{
+					this.OnPaymentType_IdChanging(value);
+					this.SendPropertyChanging();
+					this._PaymentType_Id = value;
+					this.SendPropertyChanged("PaymentType_Id");
+					this.OnPaymentType_IdChanged();
 				}
 			}
 		}

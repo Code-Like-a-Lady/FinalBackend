@@ -165,7 +165,27 @@ namespace Group_Project
         [OperationContract]
         Product_Size Getsproductsize(int sid);
 
-      
+              //-----------------CHANGES-------
+        //getting allsizes
+        [OperationContract]
+        List<Size_Table> Getallsizes();
+
+        //getting all product sizes
+        [OperationContract]
+        List<Product_Size> Getallproductsizes();
+
+        //adding and admin
+        [OperationContract]
+        string AddAdmin(User_Table user, string surname);
+
+        [OperationContract]
+        string Getcategorybyname(string name);
+
+        //get all items of an invoice 
+        [OperationContract]
+        List<Order_Item> getAllItems(int orderID);
+        [OperationContract]
+        List<Product> GetProductsByMask_Type(string Name);
 
         //Report
 
@@ -184,7 +204,8 @@ namespace Group_Project
 		Delivery GetDelivery(int DeliveryID);
 
         //<-----Adding To Cart----->
-		bool AddtoCart(int ClientId,int ProductID,int quantity,Decimal price);
+        [OperationContract]
+        bool AddtoCart(int ClientId,int ProductID,int quantity,Decimal price);
 		[OperationContract]
 		bool EditFromCart(int ClientId, int ProductID, int quantity, Decimal price);
 		[OperationContract]
@@ -203,5 +224,13 @@ namespace Group_Project
         int CalculateTotalQuantity(int ClientID);
 
         //<-----Adding To Order----->
+        [OperationContract]
+        bool placeOrder(int userId, int shipping, int paymentId);
+
+        [OperationContract]
+        int makePayment(string cardNum, string cvv, string expiry, string cardHolder, string payType);
+
+        [OperationContract]
+        List<PaymentType> getPaymentTypes();
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Linq;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Security.Cryptography;
@@ -1001,7 +1002,7 @@ namespace Group_Project
             dynamic prod = (from t in db.Mask_Types
                             select t);
 
-            foreach (Product p in prod)
+            foreach (Mask_Type p in prod)
             {
                 var ps = GetMask(p.Mask_Id);
                 type.Add(ps);
@@ -1161,6 +1162,122 @@ namespace Group_Project
         }
 
 
+ //-----------------CHANGES-------
+
+        public string Getcategorybyname(string name)
+        {
+            var cat = (from n in db.Mask_Types
+                       where n.Name.Equals(name)
+                       select n).FirstOrDefault();
+            if (cat == null)
+            {
+                return " no cate found";
+            }
+            else
+            {
+                return " it exists";
+            }
+        }
+
+        public List<Product> GetProductsByMask_Type(string Name)
+        {
+            List<Product> Products = new List<Product>();
+            Mask_Type cat=(from n in db.Mask_Types
+                               where n.Name.Equals(Name)
+                                       select n).FirstOrDefault();
+            int MaskID = cat.Mask_Id;
+            dynamic dbProducts = (from p in db.Products
+                                where p.Mask_Id.Equals(MaskID) && p.Active.Equals(1)
+                                select p).ToList();
+            foreach(Product pro in dbProducts)
+            {
+                Products.Add(pro);
+            }
+            return Products;
+            
+
+        }
+
+        public List<Order_Item> getAllItems(int orderID)
+        {
+            var o = new List<Order_Item>();
+
+            dynamic prod = (from t in db.Order_Items
+                            where t.Order_Id.Equals(orderID)
+                            select t);
+
+            foreach (Order_Item or in prod)
+            {
+                var ord = GetItem(or.Order_Id);
+                o.Add(ord);
+            }
+
+            return o;
+        }
+
+
+        public List<Size_Table> Getallsizes()
+        {
+            List<Size_Table> sizes = new List<Size_Table>();
+
+            dynamic siz = (from s in db.Size_Tables
+                           select s).ToList();
+
+            foreach (Size_Table sz in siz)
+            {
+                sizes.Add(sz);
+            }
+
+            return sizes;
+
+        }
+
+        public List<Product_Size> Getallproductsizes()
+        {
+            List<Product_Size> psizes = new List<Product_Size>();
+
+            dynamic psiz = (from s in db.Product_Sizes
+                            select s).ToList();
+
+            foreach (Product_Size sz in psiz)
+            {
+                psizes.Add(sz);
+            }
+
+            return psizes;
+        }
+
+        public string AddAdmin(User_Table user, string surname)
+        {
+            var admin = (from a in db.User_Tables
+                         where a.User_Id.Equals(user.User_Id)
+                         select a).FirstOrDefault();
+            if (admin == null)
+            {
+                var newAdmin = new Admin()
+                {
+                    User_Id = user.User_Id,
+                    Surname = surname,
+                };
+                db.Admins.InsertOnSubmit(newAdmin);
+                try
+                {
+                    db.SubmitChanges();
+                    return " added";
+                }
+                catch (Exception ex)
+                {
+                    ex.GetBaseException();
+                    return "Something went wrong try again";
+                }
+            }
+            else
+            {
+                return " Please try again";
+            }
+
+
+        }
 
 
 
@@ -1275,8 +1392,8 @@ namespace Group_Project
 
             if(cart!=null)
             {
-                cart.Quantity = quantity;
-                cart.Price = price;
+                cart.Quantity += quantity;
+                cart.Price += price;
                 try
                 {
                     //update
@@ -1370,7 +1487,7 @@ namespace Group_Project
             products = GetAllCartItemsForClient(ClientID);
             foreach(Cart c in products)
             {
-                Total += c.Price;
+                Total += c.Price * c.Quantity;
             }
             return Total;
         }
@@ -1387,6 +1504,80 @@ namespace Group_Project
             return Total;
         }
         //<-----Moving from cart to Order----->
+        public bool placeOrder(int userId, int shipping, int paymentId)
+        {
+            Cart[] items = GetAllCartItemsForClient(userId).ToArray();
+            decimal perc = 0;
+            if (CalculateTotalQuantity(userId) >= 5000) perc = 5;
+
+
+            Order_Table order = new Order_Table
+            {
+                Order_date = DateTime.Now,
+                Order_Total = CalculateTotalPrice(userId),
+                Order_Quantity = CalculateTotalQuantity(userId),
+                Order_Tax = CalculateTotalPrice(userId) * (decimal)0.15,
+                Order_Status = "Ordered",
+                Order_Discount = perc > 0 ? 0 : (perc / 100) * CalculateTotalPrice(userId),
+                Order_Shipping = CalculateTotalQuantity(userId) > 10000 ? 0 : CalculateTotalQuantity(userId) * (decimal)0.02,
+                Delivery_Id = shipping
+            };
+
+            db.Order_Tables.InsertOnSubmit(order);
+            db.SubmitChanges();
+            int orderId = (from o in db.Order_Tables where o.Order_date.Equals(order.Order_date) select o).FirstOrDefault().Order_Id;
+            order.Order_Total = order.Order_Total + order.Order_Tax + order.Order_Shipping - order.Order_Discount;
+
+
+            foreach(Cart c in items)
+            {
+                Order_Item oi = new Order_Item
+                {
+                    Quantity = c.Quantity,
+                    Product_Id = c.Product_Id,
+                    Order_Id = order.Order_Id,
+                };
+
+                db.Order_Items.InsertOnSubmit(oi);
+            }
+
+            ClearTheCart(userId);
+            PayClient pc = new PayClient
+            {
+                User_Id = userId,
+                Payment_Id = paymentId,
+                Order_Id = orderId,
+            };
+            db.PayClients.InsertOnSubmit(pc);
+
+            db.SubmitChanges();
+            return ClearTheCart(userId);
+
+        }
+
+        public int makePayment(string cardNum, string cvv, string expiry, string cardHolder, string payType)
+        {
+            Payment p = new Payment
+            {
+                Cardholder_Name = cardHolder,
+                Card_num = cardNum,
+                CVV = cvv,
+                Expiry_Date = expiry,
+                PaymentType_Id = int.Parse(payType)
+            };
+
+            db.Payments.InsertOnSubmit(p);
+
+         
+                db.SubmitChanges();
+    
+
+            return p.Payment_Id;
+        }
+
+        public List<PaymentType> getPaymentTypes() {
+            return (from pt in db.PaymentTypes select pt).ToList();
+        }
 
         //<-----Client Information---->
     }
