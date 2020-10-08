@@ -40,3 +40,10 @@ C:\Users\Laaiqah\Downloads\IFM_GroupProject\IFM_GroupProject\FinalBackend\Group_
 C:\Users\Laaiqah\Downloads\IFM_GroupProject\IFM_GroupProject\FinalBackend\Group_Project\obj\Debug\Group_Project.csproj.CoreCompileInputs.cache
 C:\Users\Laaiqah\Downloads\IFM_GroupProject\IFM_GroupProject\FinalBackend\Group_Project\obj\Debug\Group_Project.dll
 C:\Users\Laaiqah\Downloads\IFM_GroupProject\IFM_GroupProject\FinalBackend\Group_Project\obj\Debug\Group_Project.pdb
+C:\Users\Saba Hannan\Desktop\FinalBackend\Group_Project\bin\Group_Project.dll.config
+C:\Users\Saba Hannan\Desktop\FinalBackend\Group_Project\bin\Group_Project.dll
+C:\Users\Saba Hannan\Desktop\FinalBackend\Group_Project\bin\Group_Project.pdb
+C:\Users\Saba Hannan\Desktop\FinalBackend\Group_Project\obj\Debug\Group_Project.csprojAssemblyReference.cache
+C:\Users\Saba Hannan\Desktop\FinalBackend\Group_Project\obj\Debug\Group_Project.csproj.CoreCompileInputs.cache
+C:\Users\Saba Hannan\Desktop\FinalBackend\Group_Project\obj\Debug\Group_Project.dll
+C:\Users\Saba Hannan\Desktop\FinalBackend\Group_Project\obj\Debug\Group_Project.pdb

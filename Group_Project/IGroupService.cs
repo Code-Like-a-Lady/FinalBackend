@@ -60,7 +60,7 @@ namespace Group_Project
 
 
 
-        //Invoice
+        //<---------------------------------------------Invoice------------------------------------------------->
         //get the invoice
         [OperationContract]
         Order_Table GetInvoice(int id);
@@ -86,10 +86,14 @@ namespace Group_Project
         [OperationContract]
         List<Order_Table> GetInvoicebbydate(DateTime d);
 
+        //get all items in an invoice 
+        [OperationContract]
+        List<Order_Item> getAllItems(int orderID);
 
 
 
-        //Product catalog
+
+        //<---------------------------------------------Product Catalogue------------------------------------------------->
         [OperationContract]
         string Addproducts(string name, string description, Decimal price, int active, int maskid, int admin, int quantity);
 
@@ -165,7 +169,7 @@ namespace Group_Project
         [OperationContract]
         Product_Size Getsproductsize(int sid);
 
-              //-----------------CHANGES-------
+        //-----------------CHANGES-------
         //getting allsizes
         [OperationContract]
         List<Size_Table> Getallsizes();
@@ -181,9 +185,6 @@ namespace Group_Project
         [OperationContract]
         string Getcategorybyname(string name);
 
-        //get all items of an invoice 
-        [OperationContract]
-        List<Order_Item> getAllItems(int orderID);
         [OperationContract]
         List<Product> GetProductsByMask_Type(string Name);
 
@@ -198,26 +199,26 @@ namespace Group_Project
         List<Delivery> GetDeliveriesForClient(int ClientID);
         [OperationContract]
         List<Order_Table> GetDeliveriesByCompany(int DeliveryID);
-		[OperationContract]
-		Delivery GetDeliveryForOrder(int orderID);
-		[OperationContract]
-		Delivery GetDelivery(int DeliveryID);
+        [OperationContract]
+        Delivery GetDeliveryForOrder(int orderID);
+        [OperationContract]
+        Delivery GetDelivery(int DeliveryID);
 
         //<-----Adding To Cart----->
         [OperationContract]
-        bool AddtoCart(int ClientId,int ProductID,int quantity,Decimal price);
-		[OperationContract]
-		bool EditFromCart(int ClientId, int ProductID, int quantity, Decimal price);
-		[OperationContract]
-		Cart GetCartItem(int ClientID, int Prod_Id);
-		[OperationContract]
-		List<Cart> GetAllCartItemsForClient(int ClientID);
-		[OperationContract]
-		List<Product> GetAllProductsInCart(int ClientID);
-		[OperationContract]
-		bool RemoveFromCart(int ClientId, int ProdID);
-		[OperationContract]
-		bool ClearTheCart(int ClientID);
+        bool AddtoCart(int ClientId, int ProductID, int quantity, Decimal price);
+        [OperationContract]
+        bool EditFromCart(int ClientId, int ProductID, int quantity, Decimal price);
+        [OperationContract]
+        Cart GetCartItem(int ClientID, int Prod_Id);
+        [OperationContract]
+        List<Cart> GetAllCartItemsForClient(int ClientID);
+        [OperationContract]
+        List<Product> GetAllProductsInCart(int ClientID);
+        [OperationContract]
+        bool RemoveFromCart(int ClientId, int ProdID);
+        [OperationContract]
+        bool ClearTheCart(int ClientID);
         [OperationContract]
         decimal CalculateTotalPrice(int ClientID);
         [OperationContract]
