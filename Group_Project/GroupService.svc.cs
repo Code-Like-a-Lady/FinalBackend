@@ -189,6 +189,8 @@ namespace Group_Project
 
                 };
 
+                db.User_Tables.InsertOnSubmit(newUser);
+
                 if (usertype == "admin")
                 {
                     Admin a = new Admin
@@ -196,20 +198,19 @@ namespace Group_Project
                         User_Id = newUser.User_Id,
                         Surname = surname
                     };
+
+                    db.Admins.InsertOnSubmit(a);
                 }
-                else if (usertype == "client")
+                else 
                 {
                     Client c = new Client
                     {
                         User_Id= newUser.User_Id,
                         Business_Type = businesstype
                     };
+                    
+                    db.Clients.InsertOnSubmit(c);
                 }
-                else
-                {
-                    return "unsuccessful";
-                }
-                db.User_Tables.InsertOnSubmit(newUser);
 
                 try
                 {
@@ -1392,8 +1393,8 @@ namespace Group_Project
 
             if(cart!=null)
             {
-                cart.Quantity += quantity;
-                cart.Price += price;
+                cart.Quantity = quantity;
+                cart.Price = price;
                 try
                 {
                     //update
@@ -1432,10 +1433,7 @@ namespace Group_Project
             dynamic shop = (from s in db.Carts
                             where s.Client_Id.Equals(ClientID)
                             select s).ToList();
-            foreach(Cart c in shop)
-            {
-                ShoppingCart.Add(c);
-            }
+            
             return ShoppingCart;
         }
 
@@ -1567,16 +1565,32 @@ namespace Group_Project
             };
 
             db.Payments.InsertOnSubmit(p);
-
-         
-                db.SubmitChanges();
-    
-
+            db.SubmitChanges();
             return p.Payment_Id;
         }
 
         public List<PaymentType> getPaymentTypes() {
             return (from pt in db.PaymentTypes select pt).ToList();
+        }
+
+        public Dictionary<String, String> getBasicStats(int days = 0)
+        {
+
+            DateTime dt = new DateTime().AddDays(-days);
+            int users = (from u in db.User_Tables where u.Date_Created >= dt select u).ToArray().Length;
+            int products = (from p in db.Products where p.Date_Created >= dt select p).ToArray().Length;
+            int orders = (from o in db.Order_Tables where o.Order_date >= dt select o).ToArray().Length;
+            int mTypes = (from t in db.Mask_Types where t.Date_Created >= dt select t).ToArray().Length;
+
+            Dictionary<string, string> basic = new Dictionary<string, string>();
+
+            basic["users"] = Convert.ToString(users);
+            basic["products"] = Convert.ToString(products);
+            basic["orders"] = Convert.ToString(orders);
+            basic["masktypes"] = Convert.ToString(mTypes);
+
+            return basic;
+
         }
 
         //<-----Client Information---->

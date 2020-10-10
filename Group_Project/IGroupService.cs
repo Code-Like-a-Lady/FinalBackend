@@ -232,5 +232,8 @@ namespace Group_Project
 
         [OperationContract]
         List<PaymentType> getPaymentTypes();
+
+        [OperationContract]
+        Dictionary<String, String> getBasicStats(int days = 0);
     }
 }
