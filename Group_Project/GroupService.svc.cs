@@ -189,6 +189,8 @@ namespace Group_Project
 
                 };
 
+                db.User_Tables.InsertOnSubmit(newUser);
+
                 if (usertype == "admin")
                 {
                     Admin a = new Admin
@@ -196,20 +198,19 @@ namespace Group_Project
                         User_Id = newUser.User_Id,
                         Surname = surname
                     };
+
+                    db.Admins.InsertOnSubmit(a);
                 }
-                else if (usertype == "client")
+                else 
                 {
                     Client c = new Client
                     {
-                        User_Id = newUser.User_Id,
+                        User_Id= newUser.User_Id,
                         Business_Type = businesstype
                     };
+                    
+                    db.Clients.InsertOnSubmit(c);
                 }
-                else
-                {
-                    return "unsuccessful";
-                }
-                db.User_Tables.InsertOnSubmit(newUser);
 
                 try
                 {
@@ -323,9 +324,9 @@ namespace Group_Project
         {
             User_Table user = GetUser(id);
 
-            user = (from u in db.User_Tables
-                    where u.User_Id.Equals(id)
-                    select u).FirstOrDefault();
+            user =( from u in db.User_Tables
+                      where u.User_Id.Equals(id)
+                      select u).FirstOrDefault();
 
             if (user == null)
             {
@@ -408,7 +409,8 @@ namespace Group_Project
 
             foreach (Order_Table or in prod)
             {
-                o.Add(or);
+                var ord = GetInvoice(or.Order_Id);
+                o.Add(ord);
             }
 
             return o;
@@ -426,6 +428,8 @@ namespace Group_Project
                 var ord = GetInvoice(or.Order_Id);
                 o.Add(ord);
             }
+
+
             return o;
         }
 
@@ -445,29 +449,6 @@ namespace Group_Project
                 }
 
                 return orders;
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        public List<Order_Item> getAllItems(int orderID)
-        {
-            var o = new List<Order_Item>();
-
-            dynamic items = (from i in db.Order_Items
-                             where i.Order_Id.Equals(orderID)
-                             select i);
-
-            foreach (Order_Item order in items)
-            {
-                o.Add(order);
-            }
-
-            if (o != null)
-            {
-                return o;
             }
             else
             {
@@ -749,7 +730,7 @@ namespace Group_Project
         }
 
 
-
+ 
         public string Addtype(string name, string description, int admin)
         {
             var ty = (from p in db.Mask_Types
@@ -1182,7 +1163,7 @@ namespace Group_Project
         }
 
 
-        //-----------------CHANGES-------
+ //-----------------CHANGES-------
 
         public string Getcategorybyname(string name)
         {
@@ -1202,21 +1183,39 @@ namespace Group_Project
         public List<Product> GetProductsByMask_Type(string Name)
         {
             List<Product> Products = new List<Product>();
-            Mask_Type cat = (from n in db.Mask_Types
-                             where n.Name.Equals(Name)
-                             select n).FirstOrDefault();
+            Mask_Type cat=(from n in db.Mask_Types
+                               where n.Name.Equals(Name)
+                                       select n).FirstOrDefault();
             int MaskID = cat.Mask_Id;
             dynamic dbProducts = (from p in db.Products
-                                  where p.Mask_Id.Equals(MaskID) && p.Active.Equals(1)
-                                  select p).ToList();
-            foreach (Product pro in dbProducts)
+                                where p.Mask_Id.Equals(MaskID) && p.Active.Equals(1)
+                                select p).ToList();
+            foreach(Product pro in dbProducts)
             {
                 Products.Add(pro);
             }
             return Products;
-
+            
 
         }
+
+        public List<Order_Item> getAllItems(int orderID)
+        {
+            var o = new List<Order_Item>();
+
+            dynamic prod = (from t in db.Order_Items
+                            where t.Order_Id.Equals(orderID)
+                            select t);
+
+            foreach (Order_Item or in prod)
+            {
+                var ord = GetItem(or.Order_Id);
+                o.Add(ord);
+            }
+
+            return o;
+        }
+
 
         public List<Size_Table> Getallsizes()
         {
@@ -1346,7 +1345,7 @@ namespace Group_Project
             dynamic del = (from d in db.Order_Tables
                            where d.Delivery_Id.Equals(DeliveryID)
                            select d).ToList();
-            foreach (Order_Table or in del)
+            foreach(Order_Table or in del)
             {
                 Orders.Add(or);
             }
@@ -1355,12 +1354,12 @@ namespace Group_Project
 
         //<-----Adding To Cart----->
         //Adds to cart
-        public bool AddtoCart(int ClientId, int ProductID, int quantity, Decimal price)
+        public bool AddtoCart(int ClientId,int ProductID,int quantity,Decimal price)
         {
             var cart = (from c in db.Carts
                         where c.Client_Id.Equals(ClientId) && c.Product_Id.Equals(ProductID)
                         select c).FirstOrDefault();
-            if (cart == null)
+            if(cart==null)
             {
                 var newCart = new Cart()
                 {
@@ -1374,8 +1373,7 @@ namespace Group_Project
                 {
                     db.SubmitChanges();
                     return true;
-                }
-                catch (Exception ex)
+                }catch(Exception ex)
                 {
                     ex.GetBaseException();
                     return false;
@@ -1393,10 +1391,10 @@ namespace Group_Project
         {
             var cart = GetCartItem(ClientId, ProductID);
 
-            if (cart != null)
+            if(cart!=null)
             {
-                cart.Quantity += quantity;
-                cart.Price += price;
+                cart.Quantity = quantity;
+                cart.Price = price;
                 try
                 {
                     //update
@@ -1435,16 +1433,13 @@ namespace Group_Project
             dynamic shop = (from s in db.Carts
                             where s.Client_Id.Equals(ClientID)
                             select s).ToList();
-            foreach (Cart c in shop)
-            {
-                ShoppingCart.Add(c);
-            }
+            
             return ShoppingCart;
         }
 
         public List<Product> GetAllProductsInCart(int ClientID)
-        {
-            dynamic cartitems = GetAllCartItemsForClient(ClientID);
+        { 
+             dynamic cartitems = GetAllCartItemsForClient(ClientID);
             List<Product> products = new List<Product>();
             foreach (Cart c in cartitems)
             {
@@ -1474,8 +1469,8 @@ namespace Group_Project
         public bool ClearTheCart(int ClientID)
         {
             dynamic cartitems = GetAllCartItemsForClient(ClientID);
-            bool Removed = true;
-            foreach (Cart c in cartitems)
+            bool Removed= true;
+            foreach(Cart c in cartitems)
             {
                 Removed = RemoveFromCart(c.Client_Id, c.Product_Id);
 
@@ -1488,7 +1483,7 @@ namespace Group_Project
             Decimal Total = 0;
             List<Cart> products = new List<Cart>();
             products = GetAllCartItemsForClient(ClientID);
-            foreach (Cart c in products)
+            foreach(Cart c in products)
             {
                 Total += c.Price * c.Quantity;
             }
@@ -1532,7 +1527,7 @@ namespace Group_Project
             order.Order_Total = order.Order_Total + order.Order_Tax + order.Order_Shipping - order.Order_Discount;
 
 
-            foreach (Cart c in items)
+            foreach(Cart c in items)
             {
                 Order_Item oi = new Order_Item
                 {
@@ -1570,17 +1565,32 @@ namespace Group_Project
             };
 
             db.Payments.InsertOnSubmit(p);
-
-
             db.SubmitChanges();
-
-
             return p.Payment_Id;
         }
 
-        public List<PaymentType> getPaymentTypes()
-        {
+        public List<PaymentType> getPaymentTypes() {
             return (from pt in db.PaymentTypes select pt).ToList();
+        }
+
+        public Dictionary<String, String> getBasicStats(int days = 0)
+        {
+
+            DateTime dt = new DateTime().AddDays(-days);
+            int users = (from u in db.User_Tables where u.Date_Created >= dt select u).ToArray().Length;
+            int products = (from p in db.Products where p.Date_Created >= dt select p).ToArray().Length;
+            int orders = (from o in db.Order_Tables where o.Order_date >= dt select o).ToArray().Length;
+            int mTypes = (from t in db.Mask_Types where t.Date_Created >= dt select t).ToArray().Length;
+
+            Dictionary<string, string> basic = new Dictionary<string, string>();
+
+            basic["users"] = Convert.ToString(users);
+            basic["products"] = Convert.ToString(products);
+            basic["orders"] = Convert.ToString(orders);
+            basic["masktypes"] = Convert.ToString(mTypes);
+
+            return basic;
+
         }
 
         //<-----Client Information---->
