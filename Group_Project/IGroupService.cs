@@ -169,7 +169,7 @@ namespace Group_Project
         [OperationContract]
         Product_Size Getsproductsize(int sid);
 
-        //-----------------CHANGES-------
+        //<---------------------------------------------Changes------------------------------------------------->
         //getting allsizes
         [OperationContract]
         List<Size_Table> Getallsizes();
@@ -188,8 +188,12 @@ namespace Group_Project
         [OperationContract]
         List<Product> GetProductsByMask_Type(string Name);
 
-        //Report
+        //<---------------------------------------------Report------------------------------------------------->
+        [OperationContract]
+        Dictionary<String, String> getBasicStats(DateTime dt);
 
+        [OperationContract]
+        Dictionary<String, String> getStats(DateTime day1, DateTime day2);
 
         //<---------------------------------------------Shopping Cart------------------------------------------------->
         //<-----Deliveries----->
@@ -233,8 +237,5 @@ namespace Group_Project
 
         [OperationContract]
         List<PaymentType> getPaymentTypes();
-
-        [OperationContract]
-        Dictionary<String, String> getBasicStats(int days = 0);
     }
 }

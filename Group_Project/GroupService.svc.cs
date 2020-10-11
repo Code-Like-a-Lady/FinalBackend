@@ -497,8 +497,6 @@ namespace Group_Project
             {
                 return "error";
             }
-
-
         }
 
         public string Editproduct(string name, string description, Decimal price, int id, int active, int maskid, int admin, int quantity)
@@ -1573,24 +1571,40 @@ namespace Group_Project
             return (from pt in db.PaymentTypes select pt).ToList();
         }
 
-        public Dictionary<String, String> getBasicStats(int days = 0)
+        public Dictionary<String, String> getBasicStats(DateTime dt)
         {
 
-            DateTime dt = new DateTime().AddDays(-days);
-            int users = (from u in db.User_Tables where u.Date_Created >= dt select u).ToArray().Length;
-            int products = (from p in db.Products where p.Date_Created >= dt select p).ToArray().Length;
-            int orders = (from o in db.Order_Tables where o.Order_date >= dt select o).ToArray().Length;
-            int mTypes = (from t in db.Mask_Types where t.Date_Created >= dt select t).ToArray().Length;
+            ///DateTime dt = new DateTime().AddDays(-days);
+            int users = (from u in db.User_Tables where u.Date_Created <= dt select u).ToArray().Length;
+            int products = (from p in db.Products where p.Date_Created <= dt select p).ToArray().Length;
+            int orders = (from o in db.Order_Tables where o.Order_date <= dt select o).ToArray().Length;
+            int mTypes = (from t in db.Mask_Types where t.Date_Created <= dt select t).ToArray().Length;
 
             Dictionary<string, string> basic = new Dictionary<string, string>();
 
-            basic["users"] = Convert.ToString(users);
-            basic["products"] = Convert.ToString(products);
-            basic["orders"] = Convert.ToString(orders);
-            basic["masktypes"] = Convert.ToString(mTypes);
+            basic["Users"] = Convert.ToString(users);
+            basic["Products"] = Convert.ToString(products);
+            basic["Orders"] = Convert.ToString(orders);
+            basic["Masktypes"] = Convert.ToString(mTypes);
 
             return basic;
+        }
 
+        public Dictionary<String, String> getStats(DateTime day1, DateTime day2)
+        {
+            int users = (from u in db.User_Tables where u.Date_Created > day1 && u.Date_Created < day2 select u).ToArray().Length;
+            int products = (from p in db.Products where p.Date_Created > day1 && p.Date_Created < day2 select p).ToArray().Length;
+            int orders = (from o in db.Order_Tables where o.Order_date > day1 && o.Order_date < day2 select o).ToArray().Length;
+            int mTypes = (from t in db.Mask_Types where t.Date_Created > day1 && t.Date_Created < day2 select t).ToArray().Length;
+
+            Dictionary<string, string> basic = new Dictionary<string, string>();
+
+            basic["Users"] = Convert.ToString(users);
+            basic["Products"] = Convert.ToString(products);
+            basic["Orders"] = Convert.ToString(orders);
+            basic["Masktypes"] = Convert.ToString(mTypes);
+
+            return basic;
         }
 
         //<-----Client Information---->
